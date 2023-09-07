@@ -5,6 +5,8 @@
 其实还有两类：并发型模式和线程池模式。
 
 二、创建型模式
+  工厂模式是在意生产出产品A、B、C，而建造者模式在意的是，产品的部件：a、b、c.
+  
 1、工厂方法：定义一个用于创建对象的接口，由子类决定实例化那一个类。
 
 //抽象产品
@@ -122,3 +124,51 @@ public:
   AbstractProductB *CreatProductB() override {return new AbstractProductB2();}
 };
 
+
+3.建造者模式:将一个复杂对象的构建与它的表示分离，使得同样的创建过程可以创建不同的模式。调整构造的顺序
+*Builder：为创建产品各个部分，统一抽象接口
+*ConcreteBuilder: 具体的创建产品的各个部分，部分A，部分B，部分C
+*Director: 构造一个使用Builder接口的对象
+*Product：表示被构造的复杂对象
+
+
+class Director
+{
+public:
+  Director();
+  Director(Builder *builder);
+  ~Director();
+
+  void create();
+  void create(Builder *builder);
+private:
+  Builder * m_builder;
+};
+
+class Builder
+{
+public:
+  Builder();
+  ~Builder();
+  virtual void builderA() = 0;
+  virtual void builderB() = 0;
+  virutal void builderC() = 0;
+}
+
+class ProductionABuilder : public Builer
+{
+public:
+  ProductionABuilder();
+  void builderA() override() {cout<<"this is ProductionABuilder";}
+  void builderB() override() {cout<<"this is ProductionABuilder";}
+  void builderC() override() {cout<<"this is ProductionABuilder";}
+};
+
+class ProductionBBuilder : public Builer
+{
+public:
+  ProductionABuilder();
+  void builderA() override() {cout<<"this is ProductionBBuilder";}
+  void builderB() override() {cout<<"this is ProductionBBuilder";}
+  void builderC() override() {cout<<"this is ProductionBBuilder";}
+};
