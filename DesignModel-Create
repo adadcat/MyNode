@@ -11,23 +11,52 @@
 class Product
 {
 public:
-  virtual void CreateProduct() = 0;
+  virtual void Production() = 0;
 };
 
-class ProductA
+class ProductA : public Product
 {
 public:
-  virtual void CreateProduct()
+  virtual void Production()
   {
     cout<<"production A "<<endl;
   }
 };
 
-class ProductB
+class ProductB : public Product
 {
 public:
-  virtual void CreateProduct()
+  virtual void Production()
   {
     cout<<"production B" <<endl;
   }
 };
+
+//抽象工厂
+class Factory
+{
+public:
+  virutal Product *CreateProduction() = 0;
+};
+
+class FactoryA : public Factory
+{
+public:
+  Product *CreateProduction(){return new ProductA()};
+};
+
+class FactoryB : public Factory
+{
+public:
+  Product *CreateProduction(){return new ProductB()};
+};
+
+int main()
+{
+  Factory *factory1 = new FactoryA();
+  Factory *factory2 = new FactoryB();
+  Product *product1 = FactoryA->CreateProduction();
+  Product *product2 = FactoryB->CreateProduction();
+  product1->Production();
+  product2->Production();
+}
