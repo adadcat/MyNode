@@ -172,3 +172,66 @@ public:
   void builderB() override() {cout<<"this is ProductionBBuilder";}
   void builderC() override() {cout<<"this is ProductionBBuilder";}
 };
+
+class Production
+{
+public:
+  void displayProductionA(){cout<<"this is functionA";}
+  void displayProductionB(){cout<<"this is functionB";}
+};
+
+void Director::create()
+{
+  m_builder->builderA();
+  m_builder->builderB();
+  m_builder->builderC();
+}
+
+void Director::create(Builder *builder)
+{
+  builder->builderA();
+  builder->builderB();
+  builder->builderC();
+}
+
+
+4、原型：实现一个Clone接口，即基于多态的Clone虚函数.可以通过基类指针，赋值派生类对象-》从一个对象，创建出一个可定制的对象，且不用在意创建的细节。
+
+class  ReConstrct
+{
+private:
+  string name;
+  double age;
+public:
+  ReConstrct(){cout<<"constrct";}
+  ReConstrct(const ReConstrct &reConstrct)
+  {
+    this->name = reContrct.name;
+    this->age = reConstrct.age;
+    cout<<"copy constrct";
+  }
+  SetConstrct(const string& name,const double age)
+  {
+    this->name = name;
+    this->age = age;
+  }
+
+  virtual ReConstrct *Clone()
+  {
+    return new ReConstrct(*this);
+  }
+};
+
+int main()
+{
+  ReConstrct *p1 = new ReConstrct();
+  p1->SetConstrct("ABCD"，11)；
+
+  ReConstrct *p2 = p1->Clone();
+  p2->SetConstrct("ABC",1);
+
+  delete p1,p2;
+  p1=nullptr;
+  p2=nullptr;
+  return 0;
+}
