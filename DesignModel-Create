@@ -60,3 +60,65 @@ int main()
   product1->Production();
   product2->Production();
 }
+
+
+2.抽象工厂模式：针对多个产品，不同的产品链
+class AbstractProductA
+{
+public:
+  virutal ~AbstractProduct();
+  virtual void ProductionA() = 0;
+};
+
+class AbstractProductA1 : public AbstractProductA
+{
+public:
+  void ProductionA() override {cout<<"AbstractProductA1"<<endl;}
+};
+
+class AbstractProductA2 : public AbstractProductA
+{
+public:
+  void ProductionA() override {cout<<"AbstractProductA2"<<endl;}
+};
+
+class AbstractProductB
+{
+public:
+  virutal ~AbstractProductB();
+  virutal void ProductionB() = 0;
+};
+
+class AbstractProductB1 : public AbstractProductB
+{
+public:
+  void ProductionB() override {cout<<"AbstractProductB1"<<endl;}
+};
+
+class AbstractProductB2 : public AbstractProductB
+{
+public:
+  void ProductionB() override {cout<<"AbstractProductB2"<<endl;}
+};
+
+class AbstractFactory
+{
+public:
+  virtual AbstractProductA *CreateProductA() = 0;
+  virutal AbstractProductB *CreateProductB() = 0;
+};
+
+class AbstractFactoryA : public AbstractFactory
+{
+public:
+  AbstractProductA *CreateProductA() override {return new AbstractProductA1();}
+  AbstractProductB *CreateProductB() override {return new AbstractProductB1();}
+};
+
+class AbstractFactoryB : public AbstractFactory
+{
+public:
+  AbstractProductA *CreatProductA() override {return new AbstractProductA2();}
+  AbstractProductB *CreatProductB() override {return new AbstractProductB2();}
+};
+
