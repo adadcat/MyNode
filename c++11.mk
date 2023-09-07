@@ -167,6 +167,16 @@ std::function是可调对象的封装器。std::function实例可以存储、复
 11.继承构造函数
 
 12.nullptr
+  表示空指针，而NULL本质上是一个int型(0).
+void func(void *ptr){cout<<"fun ptr";}
+void func(int i){cout<<"i";}
+
+int main()
+{
+  func(NULL);//编译失败，会产生二义性
+  func(nullptr);//输出 fun ptr；
+  return 0;
+}
 
 13.final&override
 
