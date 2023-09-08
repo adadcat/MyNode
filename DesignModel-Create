@@ -235,3 +235,58 @@ int main()
   p2=nullptr;
   return 0;
 }
+
+
+5、单例模式：一个类只产生一个实例-》经典实现方式：静态局部变量的懒汉单例
+懒汉式：需要该实例的时候，才去创建并使用实例。需考虑线性安全。
+饿汉式：一开始就初始化创建实例，使用时直接调用。
+
+1)加锁的懒汉式
+class SingleInstance
+{
+public:
+  //获取单实例对象
+  static SingleInstance *GetInstance();
+  //释放单例对象，程序退出时调用
+  static void deleteInstance();
+private:
+  //私有构造和析构函数
+  SingleInstance();
+  ~SingleInstance();
+
+  //私有拷贝构造和赋值
+  SingleInstance(const SingleInstance &singal);
+  const SingleInstance &operator=(const SingleInstance &singnal);
+
+private:
+  static SingleInstance *m_SingleInstance;
+  static std::mutex m_Mutex;
+};
+
+SingleInstance *SingleInstance::m_SingleInstance = nullptr;
+std::mutex SingleInstance::m_Mutex;
+
+SingleInstance *SingleInstance::GetInstance()
+{
+  //双检锁：只有判断指针为空的时候才加锁，减少消耗
+  if(m_SingleInstance==nullptr)
+  {
+    std::unique_lock<std::mutex> lock(m_Mutex);
+    if (m_SingleInstance == nullptr)
+    {
+      volatile auto temp = new (std::nothrow) SingleInstance();
+      m_SingleInstance = temp;
+    }
+  }
+  return m_SinleInstace;
+}
+
+void SingleInstance::deleteInstance()
+{
+  std::unique_lock<std::mutex> lock(m_Mutex);
+  if(m_SingleInstance)
+  {
+    delete m_SingleInstance;
+    SingleInstance = nullptr;
+  }
+}
