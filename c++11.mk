@@ -61,6 +61,9 @@
 @@@注2
 {
   移动构造函数：移动语义的实现，将旧对象的资源，转为新对象所拥有，且旧对象将失去该资源
+  移动-》转移资源的所有权
+      1）某些资源（如动态分配的内存、文件句柄等）在复制时可能会产生昂贵的开销或引发不必要的资源重复
+      2）当对象不再需要资源时，可以将资源的所有权转移到另一个对象，确保资源在正确的时间释放
 }
 
 例子，引入完美转发来进行左值和右值的判定：
@@ -179,8 +182,41 @@ int main()
 }
 
 13.final&override
+  final:修饰类，表示该类禁止被派生
+class Base final
+{
+public:
+  virutal void test();
+};
+
+class Son: public final//编译失败
+{};
+
+  override:修饰派生类的成员函数，标明该类重写了基类函数；如果一个父类，不是该函数的虚函数，编译报错；
+class Father
+{
+public:
+  virtual test1(){}
+  void test2(){}
+};
+
+class Son : public Father
+{
+public:
+  test1() override{}
+  test2() override{//报错}
+};
 
 14.default
+  辅助声明构造函数
+{
+class Test
+{
+public:
+  
+};
+}
+
 
 15.delete
 
