@@ -209,15 +209,146 @@ public:
 
 14.default
   辅助声明构造函数
-{
+->{
 class Test
 {
 public:
-  
+  int a;
+  Test(int a){a = 10;}
 };
-}
 
+int main()
+{
+  Test xx;//编译失败
+}
+}<-
+->{
+class Test
+{
+  Test() = default;
+  int a;
+  Test(int a){a = 10;}
+};
+
+int main()
+{
+  Test t;
+  return 0;
+}
+}<-
 
 15.delete
+  用于禁止拷贝构造和赋值操作符
+->{
+class Test
+{
+public:
+  A() = default;
+  A(const &A) = delete;
+  A& operator = (const &A) = delete;
+  int a;
+};
+
+int main()
+{
+ A a1;
+ A a2 = a1;//失败
+ A a3；
+ a3 = a1;//失败
+}
+}<-
 
 16.explicit
+  修饰构造函数，只能显示转换，不能隐式转换。
+->{
+class MyClass
+{
+public:
+  explicit MyClass(int value) : num(value){}
+  int value;
+};
+
+int mian()
+{
+  //显式构造函数创建对象
+  MyClass a(6);
+
+  // 错误示例：隐式类型转换将 int 转换为 MyClass
+  // MyClass obj2 = 10;
+
+  // 正确示例：显式类型转换将 int 转换为 MyClass
+  MyClass obj3 = MyClass(10)
+  return 0;
+}
+}<-
+
+17、constexpr
+  可用于修饰常量表达式，在编译时可以求值--->1、提前计算，避免运行时开销；2、在编译阶段，检测常量表达式的错误：除以0，越界等
+
+18、enum class
+  强枚举
+->{
+enum AColor 
+{
+    Red,
+    Green,
+};
+
+enum BColor 
+{
+    White,
+    Black,
+};
+
+int main() 
+{
+    if (Red == White 
+    {
+        cout << "red == white" << endl;
+    }
+    return 0;
+}
+}<-
+->{
+enum class AColor 
+{
+    Red,
+    Green,
+};
+
+enum class BColor
+{
+    kWhite,
+    kBlack,
+};
+
+int main()
+{
+    if (AColor::kRed == BColor::kWhite) // 编译失败
+    { 
+        cout << "red == white" << endl;
+    }
+    return 0;
+}
+}<-
+
+19、static_assert
+  一种静态断言机制，用于在编译时检查一些条件是否为真。如果断言条件为假，编译会失败，并显示一个错误消息。
+  static_assert(condition, error_message);
+->{
+template<typename T>
+void processValue(T value) 
+{
+    static_assert(std::is_integral<T>::value, "T must be an integral type.");
+    // 处理值...
+}
+
+int main()
+{
+    int num = 10;
+    processValue(num);  // 正确，T 是整型类型
+    double pi = 3.14159;
+    // processValue(pi);  // 错误，T 不是整型类型，编译时断言失败
+    return 0;
+}
+}<-
