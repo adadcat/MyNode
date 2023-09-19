@@ -1,4 +1,4 @@
-1.auto & decltype:类型推导
+  1.auto & decltype:类型推导
 //auto推导变量类型
 {
   auto test = 10;
@@ -143,6 +143,18 @@
 }
 
 5.初始化列表
+  花括号列表初始化
+->{
+struct A 
+{
+public:
+    A(int) {}
+};
+int main() {
+    A d{123}; // c++11
+    return 0;
+}
+}<-
 
 6.std::function & std::bind & lambda表达式
 
@@ -154,16 +166,243 @@
 *bind表达式或其它函数对象
 
 std::function是可调对象的封装器。std::function实例可以存储、复制和调用任何可调用对象。
+->{
+int add(int a, int b) 
 {
-  std::function<void(int)> test;
-
+    return a + b;
 }
 
+class Multiply 
+{
+public:
+    int operator()(int a, int b) {return a * b;}
+};
+
+int main() 
+{
+    std::function<int(int, int)> func;
+
+    // 存储函数指针
+    func = &add;
+    int result1 = func(3, 4);
+    std::cout << "Result1: " << result1 << std::endl;
+
+    // 存储函数对象
+    Multiply multiply;
+    func = multiply;
+    int result2 = func(3, 4);
+    std::cout << "Result2: " << result2 << std::endl;
+
+    // 存储 Lambda 表达式
+    func = [](int a, int b) { return a - b; };
+    int result3 = func(3, 4);
+    std::cout << "Result3: " << result3 << std::endl;
+
+    return 0;
+}
+}<-
+
+
+->{
+int add(int a, int b) { return a + b;}
+
+class Multiply
+{
+public:
+    int operator()(int a, int b) {return a * b;}
+};
+
+int main() 
+{
+    // 使用 std::bind 绑定函数指针和参数
+    auto addFunc = std::bind(add, 3, 4);
+    int result1 = addFunc();
+    std::cout << "Result1: " << result1 << std::endl;
+
+    // 使用 std::bind 绑定成员函数和对象
+    Multiply multiply;
+    auto multiplyFunc = std::bind(&Multiply::operator(), multiply, 3, 4);
+    int result2 = multiplyFunc();
+    std::cout << "Result2: " << result2 << std::endl;
+
+    // 使用 std::bind 绑定 Lambda 表达式和参数
+    auto lambdaFunc = std::bind([](int a, int b) { return a - b; }, 3, 4);
+    int result3 = lambdaFunc();
+    std::cout << "Result3: " << result3 << std::endl;
+
+    return 0;
+}
+}<-
+
 7.模板的改进
+  1)模板的别名
+  template<class T>
+  struct Alloc { };
+
+  template<class T>
+  using Vec = vector<T, Alloc<T>>; // 类型标识为 vector<T, Alloc<T>>
+  Vec<int> v; // Vec<int> 同 vector<int, Alloc<int>>
+
+  2)支持变长参数模板
+  template <typename T>
+  void func(const T& t)
+  {
+    cout << t << '\n';
+  }
+
+  template <typename T, typename ... Args>
+  void func(const T& t, Args ... args)
+  {
+    cout << t << ',';
+    func(args...);
+  }
 
 8.并发
 
 9.智能指针
+  shard_ptr:使用了引用计数，每进行一次拷贝就会使计数+1；生命周期结束析构时，计数-1，在最后一个shard_ptr析构后，内存释放
+->{
+int main()
+{
+  std::shard_ptr<int> sharedInt(new int(16));
+  //输出   shear ptr value:16
+  cout<<"shear ptr value:"<<*sharedInt<<endl;
+  std::shard_ptr<int> shardInt2 = sharedInt;
+  //将会输出  引用计数：2
+  cout<<"引用计数："<<sharedInt.use_count()<<endl;
+
+  // 修改被管理对象的值
+  *sharedInt = 99;
+  // 输出: 修改后的值: 99
+  cout << "修改后的值: " << *sharedInt << endl;
+  // 输出: 修改后的值(sharedInt2): 99
+  cout << "修改后的值(sharedInt2): " << *sharedInt2 << endl; 
+  // 重置 shared_ptr，会减少引用计数
+  sharedInt.reset();
+  std::cout << "引用计数: " << sharedInt2.use_count() << std::endl; // 输出: 引用计数: 1
+  // sharedInt2 超出作用域后，被管理的对象会被自动销毁
+  return 0;
+}
+}<-
+->{shard_ptr在循环使用时，会出现内存泄漏的问题
+
+class A {
+public:
+    std::shared_ptr<B> bPtr;
+    ~A() {cout << "A destructor called" << endl;}
+};
+
+class B {
+public:
+    std::shared_ptr<A> aPtr;
+
+    ~B() {cout << "B destructor called" <<endl; }
+};
+
+int main()
+{
+    std::shared_ptr<A> aPtr(new A());
+    std::shared_ptr<B> bPtr(new B());
+
+    aPtr->bPtr = bPtr;
+    bPtr->aPtr = aPtr;
+
+    return 0;
+}
+
+初始状态下，aPtr 和 bPtr 的引用计数为1。
+aPtr->bPtr = bPtr 执行后，aPtr 中的 bPtr 成员被赋值为 bPtr，同时 bPtr 的引用计数增加为2。
+bPtr->aPtr = aPtr 执行后，bPtr 中的 aPtr 成员被赋值为 aPtr，同时 aPtr 的引用计数增加为2。
+}<-
+
+
+创建weak_ptr时，需要通过shared_ptr初始化，不能直接使用new关键字。weak_ptr本身不会增加引用计数，只是对shared_ptr进行观测。
+weak_ptr需要通过lock()方法获取shared_ptr对象，然后才能访问被管理的对象。
+lock() 方法会检查 weak_ptr 所观测的对象是否已被释放：
+        如果未被释放，则返回一个有效的shared_ptr；如果已被释放，则返回一个空的 shared_ptr。
+在使用 weak_ptr 所观测的对象之前，一定要检查使用返回的 shared_ptr 是否为空，以避免访问已经释放的对象。
+->{
+class A;
+class B 
+{
+public:
+    std::weak_ptr<A> a;
+    ~B() {std::cout << "B destructor called" << std::endl; }
+};
+
+class A 
+{
+public:
+    std::shared_ptr<B> b;
+    ~A() {std::cout << "A destructor called" << std::endl;}
+};
+
+int main() 
+{
+    std::shared_ptr<A> aPtr(new A());
+    std::shared_ptr<B> bPtr(new B());
+
+    aPtr->b = bPtr;
+    bPtr->a = aPtr;
+
+    // 使用 weak_ptr 和 lock() 方法获取 shared_ptr
+    std::shared_ptr<A> aPtrLock = bPtr->a.lock();
+    //std::shared_ptr<B> bPtrLock = aPtr->b.lock();
+
+    // 检查 shared_ptr 是否为空，然后访问被管理的对象
+    if (aPtrLock) 
+    {
+        // 访问 aPtrLock
+        std::cout << "aPtrLock are valid" << std::endl;
+    }
+
+    return 0;
+}
+}<-
+
+
+
+unique_ptr:独占管理对象，同一时间只能有一个unique_ptr拥有对象的管理权，所以是不能进行拷贝或赋值操作。
+    只能通过std::move移动语义来转移所有权。
+->{
+class MyClass 
+{
+public:
+    MyClass() {std::cout << "MyClass constructor called" << std::endl;}
+    ~MyClass() {std::cout << "MyClass destructor called" << std::endl;}
+    void doSomething() {std::cout << "Doing something" << std::endl;}
+};
+
+int main()
+{
+    // 创建一个 unique_ptr，指向一个动态分配的 MyClass 对象
+    std::unique_ptr<MyClass> myPtr(new MyClass());
+
+    // 使用 unique_ptr 调用 MyClass 的成员函数
+    myPtr->doSomething();
+
+    // unique_ptr 在作用域结束时会自动释放所管理的对象
+    return 0;
+}
+->{
+unique_ptr的一些辅助函数
+  1)reset()：重置 unique_ptr 所管理的对象或释放对象。
+  std::unique_ptr<MyClass> myPtr(new MyClass());
+  myPtr.reset(); // 释放所管理的对象
+
+  2)get()：获取 unique_ptr 的原始指针。
+  std::unique_ptr<MyClass> myPtr(new MyClass());
+  MyClass* rawPtr = myPtr.get(); // 获取原始指针
+  
+  3)release()：释放 unique_ptr 的所有权，返回所管理的对象的指针，并将 unique_ptr 置为 nullptr。
+  std::unique_ptr<MyClass> myPtr(new MyClass());
+  MyClass* rawPtr = myPtr.release(); // 释放所有权
+}<-
+
+std::unique_ptr<MyClass> myPtr(new MyClass());
+std::unique_ptr<MyClass> otherPtr = std::move(myPtr); // 转移所有权
+
+}<-
 
 10.委托构造函数
 
@@ -352,3 +591,10 @@ int main()
     return 0;
 }
 }<-
+
+20、新数据结构
+  std::forword_list:单向链表；相对于std::list节省了内存，提高了性能
+  std::unordered_set：基于hash表实现的set，内部不会排序，使用方法和set类似
+  std::unordered_map：基于hash表实现的map，内部不会排序，使用方法和map类似
+  std::array：数组，在越界访问时抛出异常，建议使用std::array替代普通的数组
+  std::tuple：元组类型，类似pair，但比pair扩展性好
