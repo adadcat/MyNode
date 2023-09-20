@@ -10,7 +10,9 @@
 2.类的构造函数：
 	一种特殊的成员函数，在每次创建类的新对象时执行。
 	构造函数的名称和类的名称都是相同的，不会返回任何类型，包括void（）。构造函数可以为某些成员变量设置初始值。
+ 
 ![2-1](https://github.com/adadcat/MyNode/blob/main/Photo-/gouzao1.png)
+
 ![2-2](https://github.com/adadcat/MyNode/blob/main/Photo-/gouzao2.png)
 
 3.类的析构函数
@@ -19,6 +21,7 @@
 	析构函数有利于在函数关闭前（关闭文件，释放内存）释放资源。
  
  ![3-1](https://github.com/adadcat/MyNode/blob/main/Photo-/xigou1.png)
+ 
 最后的时候执行析构函数，释放内存。
  ![3-2](https://github.com/adadcat/MyNode/blob/main/Photo-/xigou2.png)
  
@@ -57,7 +60,9 @@
 	（5）堆区（heap）：由程序员分配释放。
  
  ![9-1](https://github.com/adadcat/MyNode/blob/main/Photo-/9-1.png)
+ 
  ![9-2](https://github.com/adadcat/MyNode/blob/main/Photo-/9-2.png)
+ 
  ![9-3](https://github.com/adadcat/MyNode/blob/main/Photo-/9-3.png)
  
 10、c++和c的区别
@@ -91,7 +96,9 @@
 	从偏移量为0的地址处开始，尽量按照同类型存储，减少内存的空白。
 	结构体总大小为所有成员中最大对齐数的整数倍。
 	如果嵌套了结构体，结构体的整体大小是包括嵌套结构体的成员在内的所有最大对齐数的整数倍。
+ 
 ![12-1](https://github.com/adadcat/MyNode/blob/main/Photo-/12-1.png) 
+
 ![12-2](https://github.com/adadcat/MyNode/blob/main/Photo-/12-2.png) 
 
 13、new delete和malloc free的区别
@@ -146,6 +153,7 @@ sizeof 计算整个字符串所占内存字节数的大小，当然\0也要+1计
 	构成多态的两个条件：
 （1）	调用函数的对象必须是指针或者引用
 （2）	被调用的函数必须是虚函数，且完成了对虚函数的重写。
+
 多态分为静态多态和动态多态。
 静态多态：也可以称为编译期间的多态；编译器在编译期间完成的，编译器根据函数
 实参的实现的类型（可能会进行隐式类型的转换），可推断出要调用那个函数，如果有对应的函数就调用对应的函数，否则就进行编译错误。
@@ -181,9 +189,13 @@ class 基类名
 		运算符的重载：重载的运算符是带有特殊名称的函数，函数名是由关键字operator和其后要重载的运算符构成。与其他函数一样，重载运算符有一个返回类型和参数列表。
   
  ![22-1](https://github.com/adadcat/MyNode/blob/main/Photo-/22-1.png) 
+ 
  ![22-2](https://github.com/adadcat/MyNode/blob/main/Photo-/22-2.png) 
+ 
  ![22-3](https://github.com/adadcat/MyNode/blob/main/Photo-/22-3.png) 
+ 
  ![22-4](https://github.com/adadcat/MyNode/blob/main/Photo-/22-4.png) 
+ 
  ![22-5](https://github.com/adadcat/MyNode/blob/main/Photo-/22-5.png) 
  
    
@@ -218,9 +230,13 @@ template  < class type> class class-name
 		静态成员函数只能访问静态数据成员。非静态成员函数，在调用时this指针被当作参数传递。而静态成员函数属于类，不属于对象，没有this指针。
 	 
  ![23-1](https://github.com/adadcat/MyNode/blob/main/Photo-/23-1.png) 
+ 
  ![23-2](https://github.com/adadcat/MyNode/blob/main/Photo-/23-2.png) 
+ 
  ![23-3](https://github.com/adadcat/MyNode/blob/main/Photo-/23-3.png) 
+ 
  ![23-4](https://github.com/adadcat/MyNode/blob/main/Photo-/23-4.png) 
+ 
  ![23-5](https://github.com/adadcat/MyNode/blob/main/Photo-/23-5.png) 
 
 24、const关键字：
