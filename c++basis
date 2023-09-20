@@ -5,6 +5,7 @@
     protected(保护权限)：类内可以访问 类外不可以访问
     private（私有权限）：类内可以访问 类外不可以访问
 	 
+![fengzhuang](https://github.com/adadcat/MyNode/blob/main/Photo-/fengzhuang.png)
 
 2.类的构造函数：
 	一种特殊的成员函数，在每次创建类的新对象时执行。
