@@ -23,6 +23,7 @@
  ![3-1](https://github.com/adadcat/MyNode/blob/main/Photo-/xigou1.png)
  
 最后的时候执行析构函数，释放内存。
+
  ![3-2](https://github.com/adadcat/MyNode/blob/main/Photo-/xigou2.png)
  
 4.赋值函数
@@ -50,6 +51,7 @@
 深拷贝不仅拷贝值，还会开辟一个新的空间存储拷贝值。如果被拷贝对象析构掉，不会对拷贝值有影。
 
 8、空类会有6个成员函数：析构函数，缺省的构造函数，拷贝构造函数、析构函数、赋值运算符、一对取址运算符、this指针。
+
 ![8-1](https://github.com/adadcat/MyNode/blob/main/Photo-/konglei.png)
 
 9、内存分区：
@@ -89,6 +91,7 @@
 	class默认是private；struct默认是public
 	（2）默认访问权限：
 	class作为对象的实现体，默认的成员访问控制是private；struct作数据结构的实现体，默认的数据访问控制是public。
+ 
 ![11-1](https://github.com/adadcat/MyNode/blob/main/Photo-/11-1.png) 
 
 12.struct内存对齐
@@ -125,6 +128,7 @@ malloc函数从堆上动态分配内存，malloc不允许被重载
 该字符的第一个地址开始遍历，直到第一个’\0’结束，返回的长度且不包括’\0’
 sizeof 计算整个字符串所占内存字节数的大小，当然\0也要+1计算；strlen 计算的是字符串的实际长度，遇到\0即停止
 	（4）sizeof（）的参数类型多样化（数组，指针，函数，对象都可以）；strlen（）的参数必须是字符型指针（传入数组时，自动退化为指针）
+ 
 ![15-1](https://github.com/adadcat/MyNode/blob/main/Photo-/15-1.png) 
  
 16、指针与引用的区别
@@ -247,5 +251,6 @@ template  < class type> class class-name
 	修饰成员函数：const对象只能访问const成员函数，而非const对象可以访问任意成员函数。  const成员是不可以修改的，而通过指针维护的对象是可以修改的。  const成员函数不可以修改对象的数据，不管对象是否具有const性质。编译时，以是否修改成员数据进行检查。
  
 ![24-1](https://github.com/adadcat/MyNode/blob/main/Photo-/24-1.png) 
+
 ![24-1](https://github.com/adadcat/MyNode/blob/main/Photo-/24-2.png) 
 	
