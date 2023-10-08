@@ -52,3 +52,8 @@ connect(sender, signal, receiver, slot);
 四、
 QMainWindow：由QT框架带来的一个预定义好的主窗口类；
 QAction：动作，代表着窗口的各种功能；
+
+五、moc
+moc：(meta object compiler)对QT源码进行一次预处理，且发生在C++预处理工作之前，并且moc不是递归的。
+
+六、布局管理器

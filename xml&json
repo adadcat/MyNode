@@ -1,0 +1,68 @@
+1、实例比较
+===>{
+<?xml version="1.0" encoding="utf-8" ?>
+<country>
+  <name>中国</name>
+  <province>
+    <name>黑龙江</name>
+    <citys>
+      <city>哈尔滨</city>
+      <city>大庆</city>
+    </citys>  　　
+  </province>
+  <province>
+    <name>广东</name>
+    <citys>
+      <city>广州</city>
+      <city>深圳</city>
+      <city>珠海</city>
+    </citys> 　　
+  </province>
+  <province>
+    <name>台湾</name>
+    <citys>
+      　<city>台北</city>
+      　<city>高雄</city>
+    </citys>　
+  </province>
+  <province>
+    <name>新疆</name>
+    <citys>
+      <city>乌鲁木齐</city>
+    </citys>
+  </province>
+</country>
+}<===
+===>{
+ var country =
+        {
+            name: "中国",
+            provinces: [
+            { name: "黑龙江", citys: { city: ["哈尔滨", "大庆"]} },
+            { name: "广东", citys: { city: ["广州", "深圳", "珠海"]} },
+            { name: "台湾", citys: { city: ["台北", "高雄"]} },
+            { name: "新疆", citys: { city: ["乌鲁木齐"]} }
+            ]
+        }
+}<===
+
+2、xml
+<1>.XML的优点
+　　A.格式统一，符合标准；
+　　B.容易与其他系统进行远程交互，数据共享比较方便。
+<2>.XML的缺点
+　　A.XML文件庞大，文件格式复杂，传输占带宽；
+　　B.服务器端和客户端都需要花费大量代码来解析XML，导致服务器端和客户端代码变得异常复杂且不易维护；
+　　C.客户端不同浏览器之间解析XML的方式不一致，需要重复编写很多代码；
+　　D.服务器端和客户端解析XML花费较多的资源和时间。
+
+3.json
+<1>.JSON的优点：
+　　A.数据格式比较简单，易于读写，格式都是压缩的，占用带宽小；
+　　B.易于解析，客户端JavaScript可以简单的通过eval()进行JSON数据的读取；
+　　C.支持多种语言，包括ActionScript, C, C#, ColdFusion, Java, JavaScript, Perl, PHP, Python, Ruby等服务器端语言，便于服务器端的解析；
+　　D.在PHP世界，已经有PHP-JSON和JSON-PHP出现了，偏于PHP序列化后的程序直接调用，PHP服务器端的对象、数组等能直接生成JSON格式，便于客户端的访问提取；
+　　E.因为JSON格式能直接为服务器端代码使用，大大简化了服务器端和客户端的代码开发量，且完成任务不变，并且易于维护。
+<2>.JSON的缺点
+　　A.没有XML格式这么推广的深入人心和喜用广泛，没有XML那么通用性；
+　　B.JSON格式目前在Web Service中推广还属于初级阶段。
