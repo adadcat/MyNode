@@ -1,0 +1,10 @@
+一、git MERGING 状态的处理
+1、解决冲突
+2、git status :查看仓库状态，可查看是否有对仓库内容有修改
+3、git add .  :添加当前目录下的所有文件到暂存区
+4、git commit -m "xxxx"
+5、git push
+(if:如果push后，发现提交带着其他人的东西)
+6、git reset 本提交的上一条的SHA
+7、git push -f  :强制推送，将远端的提交覆盖
+8、git commit & git push 
