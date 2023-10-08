@@ -12,6 +12,8 @@ namespace miniSTL
 	struct rb_tree_base
 	{
 		typedef rb_tree_base* pBase;
+
+		color_type color;//节点颜色
 		pBase parent;//父节点
 		pBase left;//左节点
 		pBase right;//右节点
@@ -107,9 +109,54 @@ namespace miniSTL
 					node = parent;					
 				}
 			}
-
-			
-			
 		}
+
+		//operator--
+		void decrement()
+		{
+			if (node->left == node)
+			{
+				return;
+			}
+
+			if (node->color == rb_tree_red && node->parent->parent == node)
+			{
+				//如果node是红，且父节点的父节点指向自己
+				//则此时的node指向header(即end())。相当于执行 --end()，right-most 即为解答
+				//注意：header之右子节点即right-most，执行整棵树的max节点
+				node = node->right;
+			}
+			else if (node->left != nullptr) 
+			{	//如果有左子节点
+				node = node->left;				//令 node 指向其左子节点
+				while (node->right != nullptr)	//找到左子节点的最右节点即为解答
+				{
+					node = node->right;
+				}
+			}
+			else 
+			{	
+				//node既header节点也无左子节点
+				//找到 node 的父节点
+				base_ptr parent = node->parent;	
+
+				while (node == parent->left) 
+				{			
+					//当现行节点身为左子节点
+					//一直往上走，直至不为左子节点
+					node = parent;						
+					parent = node->parent;
+				}
+				//此时的父节点即为解答
+				node = parent;			
+			}
+		}
+	};
+
+	template<class Value,class Ref,class Ptr>
+	struct rb_tree_iterator : public rb_tree_iterator_base
+	{
+		typedef Value value_type;
+
 	};
 }
