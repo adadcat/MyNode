@@ -69,4 +69,48 @@ QStackedLayout：层叠的布局，允许我们将几个组件按照 Z 轴方向
 范围指针	QScopedPointer, QScopedPointerArray：为了 RAII 目的：获取指针所有权，保证其能够在超出作用域的时候恰当地销毁。非共享的。
 追踪 QObject对象	QPointer：追踪给定的 QObject 对象生命。
 
-七、
+七、对话框
+模态对话框：开启该对话框后，会阻塞同一应用程序的其他对话框的输入。
+        1）应用程序级：开启对话框后，在本应用程序下，只能进行对该对话框的点击
+        2）窗口级：开启对话框后，只阻塞对话框关联的窗口，适用于多窗口模式。
+非模态对话框：开启该对话框后，仍能进行对其他功能的操作
+
+QDialog
+可通过QDialog::exec()的返回值：QDialog::Accepted或者QDialog::Rejected来判断用户点击的情况
+===>{
+QDialog dialog(this);
+if (dialog.exec() == QDialog::Accepted) 
+{
+    // do something
+} 
+else 
+{
+    // do something else
+}
+}<===
+
+===>{
+QMessageBox msgBox;
+msgBox.setText(tr("The document has been modified."));
+msgBox.setInformativeText(tr("Do you want to save your changes?"));
+msgBox.setDetailedText(tr("Differences here..."));
+msgBox.setStandardButtons(QMessageBox::Save
+                          | QMessageBox::Discard
+                          | QMessageBox::Cancel);
+msgBox.setDefaultButton(QMessageBox::Save);
+int ret = msgBox.exec();
+switch (ret) {
+case QMessageBox::Save:
+    qDebug() << "Save document!";
+    break;
+case QMessageBox::Discard:
+    qDebug() << "Discard changes!";
+    break;
+case QMessageBox::Cancel:
+    qDebug() << "Close document!";
+    break;
+}
+}<===
+
+
+
