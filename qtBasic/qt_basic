@@ -62,3 +62,11 @@ QVBoxLayout：按照竖直方向从上到下布局；
 QGridLayout：在一个网格中进行布局，类似于 HTML 的 table；
 QFormLayout：按照表格布局，每一行前面是一段文本，文本后面跟随一个组件（通常是输入框），类似 HTML 的 form；
 QStackedLayout：层叠的布局，允许我们将几个组件按照 Z 轴方向堆叠，可以形成向导那种一页一页的效果。
+
+七、智能指针
+共享数据	QSharedDataPointer, QExplicitlySharedDataPointer：隐式或者显式地共享数据（不共享指针）。也被称为“侵入式指针”。
+共享指针	QSharedPointer, QWeakPointer：线程安全的共享指针，类似 C++11 的std::shared_ptr，只不过具有良好的 Qt API。
+范围指针	QScopedPointer, QScopedPointerArray：为了 RAII 目的：获取指针所有权，保证其能够在超出作用域的时候恰当地销毁。非共享的。
+追踪 QObject对象	QPointer：追踪给定的 QObject 对象生命。
+
+七、
