@@ -95,11 +95,11 @@ msgBox.setText(tr("The document has been modified."));
 msgBox.setInformativeText(tr("Do you want to save your changes?"));
 msgBox.setDetailedText(tr("Differences here..."));
 msgBox.setStandardButtons(QMessageBox::Save
-                          | QMessageBox::Discard
-                          | QMessageBox::Cancel);
+                          | QMessageBox::Discard| QMessageBox::Cancel);
 msgBox.setDefaultButton(QMessageBox::Save);
 int ret = msgBox.exec();
-switch (ret) {
+switch (ret) 
+{
 case QMessageBox::Save:
     qDebug() << "Save document!";
     break;
@@ -122,3 +122,85 @@ case QMessageBox::Cancel:
         ignore()->意味着事件继续传播
 （事件的传播是在组件层次上面的，而不是依靠类继承机制。）
 
+处理事件的5个层面：
+1、重写paintEvent()、mousePressEvent()等事件处理函数。
+2、重写event()函数。event()函数是所有对象的事件入口，QObject和QWidget中的实现，默认是把事件传递给特定的事件处理函数。
+3、在特定对象上面安装事件过滤器。该过滤器仅过滤该对象接收到的事件。
+4、在QCoreApplication::instance()上面安装事件过滤器。该过滤器将过滤所有对象的所有事件，因此和notify()函数一样强大
+但是它更灵活，因为可以安装多个过滤器。全局的事件过滤器可以看到 disabled 组件上面发出的鼠标事件。
+全局过滤器有一个问题：只能用在主线程。
+5、重写QCoreApplication::notify()函数。这是最强大的，和全局事件过滤器一样提供完全控制，并且不受线程的限制。
+但是全局范围内只能有一个被使用（因为QCoreApplication是单例的）。
+===>{
+class Label : public QWidget
+{
+public:
+    Label()
+    {
+        installEventFilter(this);
+    }
+
+    bool eventFilter(QObject *watched, QEvent *event)
+    {
+        if (watched == this) {
+            if (event->type() == QEvent::MouseButtonPress) {
+                qDebug() << "eventFilter";
+            }
+        }
+        return false;
+    }
+
+protected:
+    void mousePressEvent(QMouseEvent *)
+    {
+        qDebug() << "mousePressEvent";
+    }
+
+    bool event(QEvent *e)
+    {
+        if (e->type() == QEvent::MouseButtonPress) {
+            qDebug() << "event";
+        }
+        return QWidget::event(e);
+    }
+};
+
+class EventFilter : public QObject
+{
+public:
+    EventFilter(QObject *watched, QObject *parent = 0) :
+        QObject(parent),
+        m_watched(watched)
+    {
+    }
+
+    bool eventFilter(QObject *watched, QEvent *event)
+    {
+        if (watched == m_watched) {
+            if (event->type() == QEvent::MouseButtonPress) {
+                qDebug() << "QApplication::eventFilter";
+            }
+        }
+        return false;
+    }
+
+private:
+    QObject *m_watched;
+};
+
+int main(int argc, char *argv[])
+{
+    QApplication app(argc, argv);
+    Label label;
+    app.installEventFilter(new EventFilter(&label, &label));
+    label.show();
+    return app.exec();
+}
+
+/*结果：
+QApplication::eventFilter 
+eventFilter 
+event 
+mousePressEvent
+*/
+}<===
