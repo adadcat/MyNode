@@ -8,3 +8,7 @@
 6、git reset 本提交的上一条的SHA
 7、git push -f  :强制推送，将远端的提交覆盖
 8、git commit & git push 
+
+二、Git cherry-pick 将分支1的东西合并到分支2中
+
+如果要取消这次cherry-pick,则使用git cherry-pick --abort，这种情况下当前分支恢复到cherry-pick前的状态，没有改变
