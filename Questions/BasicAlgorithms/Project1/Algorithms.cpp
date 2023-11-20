@@ -238,6 +238,73 @@ bool Algorithms::isPalindrome(int x)
 
 int Algorithms::romanToInt(string s)
 {
-    return 0;
+    unordered_map<char, int> symbolValues = 
+    {
+       {'I', 1},
+       {'V', 5},
+       {'X', 10},
+       {'L', 50},
+       {'C', 100},
+       {'D', 500},
+       {'M', 1000},
+    };
+
+    int sum = 0;
+    for (int i = 0;i < s.size();++i)
+    {
+        int value = symbolValues[s[i]];
+
+        if (i < s.size() - 1 && value < symbolValues[s[i + 1]])
+        {
+            sum -= value;
+        }
+        else
+        {
+            sum += value;
+        }
+    }
+
+
+    return sum;
+}
+
+string Algorithms::longestCommonPrefix(vector<string>& strs)
+{
+    string str = "";
+    
+    if (1 == strs.size())
+    {
+        return strs[0];
+    }
+
+    bool ifReturn = false;
+    for (int i = 0;i < strs[0].size();++i)
+    {
+        char c = strs[0][i];
+
+        for (int j = 1;j < strs.size();++j)
+        {
+            //从每一个str，分别拿对应序号的字符进行比较
+            //有一个不一致，就退出
+            if (strs[j][i] != c)
+            {
+                ifReturn = true;
+                break;
+            }
+
+            //成功遍历完，将该序列的字符，放到字符串中
+            if (j == strs.size() - 1)
+            {
+                str.push_back(c);
+            }
+        }
+        
+        if (ifReturn)
+        {
+            break;
+        }
+    }
+
+    return str;
 }
 

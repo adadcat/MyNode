@@ -8,7 +8,8 @@ int main()
 {
     Algorithms tmp;
 
-    tmp.isPalindrome(121);
+    vector<string> test = { "cir","car" };
+    tmp.longestCommonPrefix(test);
 
     return 0;
 }
