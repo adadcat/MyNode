@@ -12,3 +12,15 @@
 二、Git cherry-pick 将分支1的东西合并到分支2中
 
 如果要取消这次cherry-pick,则使用git cherry-pick --abort，这种情况下当前分支恢复到cherry-pick前的状态，没有改变
+
+三、git报错
+Unable to create 'D:/xxx/.git/index.lock': File exists.
+Another git process seems to be running in this repository, e.g.an editor opened by 'git commit'.
+Please make sure all processes are terminated then try again. If it still fails, a git process may have crashed in this repository earlier:
+remove the file manually to continue.
+Pull operation failed.
+
+方案：
+.git下的index.lock文件，在进行某些比较费时的git操作时自动生成，操作结束后自动删除，相当于一个锁定文件，目的在于防止对一个目录同时进行多个操作。
+有时强制关闭进行中的git操作，这个文件没有被自动删除，之后就无法进行其他git操作，必须手动删除。
+===》找到.git/index.lock文件，直接删除即可；
