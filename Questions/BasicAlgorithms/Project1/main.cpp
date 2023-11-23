@@ -8,8 +8,8 @@ int main()
 {
     Algorithms tmp;
 
-    vector<string> test = { "cir","car" };
-    tmp.longestCommonPrefix(test);
+    vector<int> test = { 1,1,2 };
+    tmp.removeDuplicates(test);
 
     return 0;
 }

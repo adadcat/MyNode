@@ -308,3 +308,130 @@ string Algorithms::longestCommonPrefix(vector<string>& strs)
     return str;
 }
 
+bool Algorithms::isValid(string s)
+{
+    if (s.size() % 2 == 1)
+    {
+        return  false;
+    }
+
+    unordered_map<char, char> symbolValues =
+    {
+        {'{','}'},
+        {'[',']'},
+        {'(',')'},
+    };
+
+    vector<char> vec;
+    for (auto c : s)
+    {
+        auto iter = symbolValues.find(c);
+        if (iter != symbolValues.end())
+        {
+            vec.push_back(c);
+            continue;
+        }
+
+        if (!vec.empty())
+        {
+            auto it = symbolValues.find(*(vec.end() - 1));
+
+            if (it->second == c)
+            {
+                vec.pop_back();
+                continue;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        return false;
+    }
+
+    if (vec.empty())
+    {
+        return true;
+    }
+
+    return false;
+}
+
+int Algorithms::removeDuplicates(vector<int>& nums)
+{
+    vector<int> vec;
+    for (auto num : nums)
+    {
+        if (vec.empty())
+        {
+            vec.push_back(num);
+        }
+        else
+        {
+            if (*(vec.end() - 1) != num)
+            {
+                vec.push_back(num);
+            }
+        }
+    }
+
+    nums.clear();
+
+    for (auto i : vec)
+    {
+        nums.push_back(i);
+    }
+
+    return vec.size();
+}
+
+int Algorithms::removeElement(vector<int>& nums, int val)
+{
+    int size = nums.size();
+    for (int i = 0;i < size;++i)
+    {
+        if (nums[i] != val)
+        {
+            nums.push_back(nums[i]);
+        }
+    }
+
+    std::reverse(nums.begin(), nums.end());
+
+    while (size)
+    {
+        nums.pop_back();
+        size--;
+    }
+
+    return nums.size();
+}
+
+int Algorithms::strStr(string haystack, string needle)
+{
+    int n = haystack.size(), m = needle.size();
+    for (int i = 0; i + m <= n; i++) 
+    {
+        bool flag = true;
+        for (int j = 0; j < m; j++) 
+        {
+            if (haystack[i + j] != needle[j]) 
+            {
+                flag = false;
+                break;
+            }
+        }
+        if (flag) 
+        {
+            return i;
+        }
+    }
+    return -1;
+}
+
+int Algorithms::High_strStr(string haystack, string needle)
+{
+    return 0;
+}
+

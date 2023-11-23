@@ -110,6 +110,51 @@ public:
     */
     string longestCommonPrefix(vector<string>& strs);
 
+    //有效的括号
+    /*
+    给定一个只包括 '('，')'，'{'，'}'，'['，']' 的字符串 s ，判断字符串是否有效。
+    有效字符串需满足：
+    左括号必须用相同类型的右括号闭合。
+    左括号必须以正确的顺序闭合。
+    每个右括号都有一个对应的相同类型的左括号
+    */
+    bool isValid(string s);
 
+    //
+    /*
+    将两个升序链表合并为一个新的 升序 链表并返回。新链表是通过拼接给定的两个链表的所有节点组成的。 
+    */
+    //ListNode* mergeTwoLists(ListNode* list1, ListNode* list2)
+
+    //删除有序数组中的重复项
+    /*
+    给你一个 非严格递增排列 的数组 nums ，请你 原地 删除重复出现的元素，使每个元素 只出现一次 ，返回删除后数组的新长度。
+    元素的 相对顺序 应该保持 一致 。然后返回 nums 中唯一元素的个数。
+    考虑 nums 的唯一元素的数量为 k ，你需要做以下事情确保你的题解可以被通过：
+    更改数组 nums ，使 nums 的前 k 个元素包含唯一元素，并按照它们最初在 nums 中出现的顺序排列。
+    nums 的其余元素与 nums 的大小不重要。
+    返回 k 。
+    */
+    int removeDuplicates(vector<int>& nums);
+
+    //移除元素
+    /*
+    给你一个数组 nums 和一个值 val，你需要 原地 移除所有数值等于 val 的元素，并返回移除后数组的新长度。
+    不要使用额外的数组空间，你必须仅使用 O(1) 额外空间并 原地 修改输入数组。
+    元素的顺序可以改变。你不需要考虑数组中超出新长度后面的元素。
+    */
+    int removeElement(vector<int>& nums, int val);
+
+    //找出字符串中第一个匹配项的下标
+    /*
+    给你两个字符串 haystack 和 needle ，请你在 haystack 字符串中找出 needle 字符串的第一个匹配项的下标（下标从 0 开始）。
+    如果 needle 不是 haystack 的一部分，则返回  -1 。
+    */
+    //暴力解题，直接匹配
+    int strStr(string haystack, string needle);
+
+    //找出字符串中第一个匹配项的下标
+    //KMP算法解题
+    int High_strStr(string haystack, string needle);
 };
 
