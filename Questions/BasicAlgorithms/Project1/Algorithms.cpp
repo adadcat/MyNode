@@ -432,6 +432,276 @@ int Algorithms::strStr(string haystack, string needle)
 
 int Algorithms::High_strStr(string haystack, string needle)
 {
+    int n = haystack.size(), m = needle.size();
+    if (m == 0) 
+    {
+        return 0;
+    }
+
+    vector<int> pi(m);
+    for (int i = 1, j = 0; i < m; i++) 
+    {
+        while (j > 0 && needle[i] != needle[j]) 
+        {
+            j = pi[j - 1];
+        }
+        if (needle[i] == needle[j]) 
+        {
+            j++;
+        }
+        pi[i] = j;
+    }
+
+    for (int i = 0, j = 0; i < n; i++) 
+    {
+        while (j > 0 && haystack[i] != needle[j]) 
+        {
+            j = pi[j - 1];
+        }
+
+        if (haystack[i] == needle[j]) 
+        {
+            j++;
+        }
+
+        if (j == m) 
+        {
+            return i - m + 1;
+        }
+    }
+    return -1;
     return 0;
 }
+
+int Algorithms::searchInsert(vector<int>& nums, int target)
+{
+    bool ifBelow = false;
+
+    for (int i = 0;i < nums.size();++i)
+    {
+        if (nums[i] > target)
+        {
+            ifBelow = true;
+        }
+
+        if (ifBelow)
+        {
+            return i;
+        }
+
+        if (nums[i] == target)
+        {
+            return i;
+        }
+    }
+
+
+    return nums.size();
+}
+
+int Algorithms::lengthOfLastWord(string s)
+{
+    string str = "";
+    string lastWord = "";
+    for (int i = 0;i < s.size();++i)
+    {
+        if (' ' == s[i])
+        {
+            str.clear();
+            continue;
+        }
+        else
+        {
+            str += s[i];
+        }
+
+        lastWord = str;
+    }
+
+    return lastWord.size();
+}
+
+vector<int> Algorithms::plusOne(vector<int>& digits)
+{
+    int i = digits.size() - 1;
+
+    size_t num = 0;
+    size_t multiplication = 1;
+
+    for (i;i >= 0;--i)
+    {
+        num += (digits[i] * multiplication);
+
+        multiplication *= 10;
+    }
+
+    num += 1;
+    digits.clear();
+
+    while (num >= 1)
+    {
+        digits.push_back(num % 10);
+        num /= 10;
+    }
+
+    reverse(digits.begin(), digits.end());
+
+    return digits;
+}
+
+vector<int> Algorithms::High_plusOne(vector<int>& digits)
+{
+    int n = digits.size();
+
+    for (int i = n - 1; i >= 0; --i) 
+    {
+        if (digits[i] != 9) 
+        {
+            ++digits[i];
+            for (int j = i + 1; j < n; ++j) 
+            {
+                //1239999，此时-》1240000
+                digits[j] = 0;
+            }
+            return digits;
+        }
+    }
+
+    // digits 中所有的元素均为 9
+    vector<int> ans(n + 1);
+    ans[0] = 1;
+    return ans;
+}
+
+string Algorithms::addBinary(string a, string b)
+{
+    string arr = "";
+    //交换顺序，方便计算
+    reverse(a.begin(), a.end());
+    reverse(b.begin(), b.end());
+    
+    size_t n = a.size() > b.size() ? a.size() : b.size();
+    int tmp = 0;
+
+    for (size_t i = 0;i < n;++i)
+    {
+        tmp += i < a.size() ? (a.at(i) == '1') : 0;
+        tmp += i < b.size() ? (b.at(i) == '1') : 0;
+        arr.push_back((tmp % 2) ? '1' : '0');
+        tmp /= 2;
+    }
+
+    if (tmp)
+    {
+        arr.push_back('1');
+    }
+    reverse(arr.begin(), arr.end());
+
+    return arr;
+}
+
+int Algorithms::mySqrt(int x)
+{
+    if (x == 1)
+    {
+        return 1;
+    }
+
+    for (size_t i = 0;i < x;++i)
+    {
+        if (i * i <= x && (i + 1) * (i + 1) > x)
+        {
+            return i;
+        }
+    }
+    return 0;
+}
+
+void Algorithms::merge(vector<int>& nums1, int m, vector<int>& nums2, int n)
+{
+    //这里nums1.size() == m+n,nums2.size()==n,nums1只有m个元素
+    for (int num : nums2)
+    {
+        nums1.push_back(num);
+    }
+
+    int tmp = 0;
+    for (int i = 0;i < m + n - 1;++i)
+    {
+        for (int j = i + 1;j < m + n;++j)
+        {
+            if (nums1[i] >= nums1[j])
+            {
+                tmp = nums1[j];
+                nums1[j] = nums1[i];
+                nums1[i] = tmp;
+            }
+        }
+    }
+
+    reverse(nums1.begin(), nums1.end());
+    for (int i = 0;i < n;++i)
+    {
+        nums1.pop_back();
+    }
+    reverse(nums1.begin(), nums1.end());
+}
+
+vector<int> Algorithms::inorderTraversal(TreeNode* root)
+{
+    if (root)
+    {
+        inorderTraversal(root->left);
+        rootValue.push_back(root->val);
+        inorderTraversal(root->right);
+    }
+
+    return rootValue;
+}
+
+bool Algorithms::isSameTree(TreeNode* p, TreeNode* q)
+{
+    if (!p && !q) 
+    {
+        return true;
+    }
+    else if (!p || !q) 
+    {
+        return false;
+    }
+    else if (p->val != q->val) 
+    {
+        return false;
+    }
+    else 
+    {
+        return isSameTree(p->left, q->left) && isSameTree(p->right, q->right);
+    }
+}
+
+//用于isSymmetric
+bool check_isSymmetric(TreeNode* p, TreeNode* q)
+{
+    if (!left && !right)
+    {
+        return true;
+    }
+    if (!left || !right)
+    {
+        return false;
+    }
+    return p->val == q->val && check_isSymmetric(p->left, q->right) && check_isSymmetric(p->right, q->right);
+}
+
+bool Algorithms::isSymmetric(TreeNode* root)
+{
+    return check_isSymmetric(root,root);
+}
+
+int Algorithms::maxDepth(TreeNode* root)
+{
+
+    return 0;
+}
+
 

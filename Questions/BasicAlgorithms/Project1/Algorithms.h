@@ -2,6 +2,19 @@
 #include <iostream>
 using namespace std;
 
+//定义一个临时的树
+//后续依据此树
+struct TreeNode 
+{
+    int val;
+    TreeNode* left;
+    TreeNode* right;
+    TreeNode() : val(0), left(nullptr), right(nullptr) {}
+    TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+    TreeNode(int x, TreeNode* left, TreeNode* right) : val(x), left(left), right(right) {}
+};
+
+
 class Algorithms
 {
 public:
@@ -156,5 +169,94 @@ public:
     //找出字符串中第一个匹配项的下标
     //KMP算法解题
     int High_strStr(string haystack, string needle);
+
+    //搜索插入位置
+    /*
+    给定一个排序数组和一个目标值，在数组中找到目标值，并返回其索引。
+    如果目标值不存在于数组中，返回它将会被按顺序插入的位置。
+    请必须使用时间复杂度为 O(log n) 的算法。
+    */
+    int searchInsert(vector<int>& nums, int target);
+
+    //最后一个单词的长度
+    /*
+    给你一个字符串 s，由若干单词组成，单词前后用一些空格字符隔开。返回字符串中 最后一个 单词的长度。
+    单词 是指仅由字母组成、不包含任何空格字符的最大子字符串。
+    */
+    int lengthOfLastWord(string s);
+
+    //加一
+    /*
+    给定一个由 整数 组成的 非空 数组所表示的非负整数，在该数的基础上加一。
+    最高位数字存放在数组的首位， 数组中每个元素只存储单个数字。
+    你可以假设除了整数 0 之外，这个整数不会以零开头。
+    */
+    //这里将数组拆分，但是数组可包含的数远大于数字，会出现越界的情况。
+    vector<int> plusOne(vector<int>& digits);
+
+    //加一
+    //直接进行对数组的操作
+    vector<int> High_plusOne(vector<int>& digits);
+
+    //二进制求和
+    /*给你两个二进制字符串 a 和 b ，以二进制字符串的形式返回它们的和.*/
+    string addBinary(string a, string b);
+
+    //x的算术平方根
+    /*
+    给你一个非负整数 x ，计算并返回 x 的 算术平方根 。
+    由于返回类型是整数，结果只保留 整数部分 ，小数部分将被 舍去 。
+    注意：不允许使用任何内置指数函数和算符，例如 pow(x, 0.5) 或者 x ** 0.5 。
+    */
+    int mySqrt(int x);
+    
+    //爬楼梯
+    /*
+    假设你正在爬楼梯。需要 n 阶你才能到达楼顶。
+    每次你可以爬 1 或 2 个台阶。你有多少种不同的方法可以爬到楼顶呢？
+    */
+    int climbStairs(int n);
+
+    //合并两个有序数组
+    /*
+    给你两个按 非递减顺序 排列的整数数组 nums1 和 nums2，另有两个整数 m 和 n ，分别表示 nums1 和 nums2 中的元素数目。
+    请你 合并 nums2 到 nums1 中，使合并后的数组同样按 非递减顺序 排列。
+    注意：最终，合并后数组不应由函数返回，而是存储在数组 nums1 中。为了应对这种情况，nums1 的初始长度为 m + n，
+    其中前 m 个元素表示应合并的元素，后 n 个元素为 0 ，应忽略。nums2 的长度为 n 。
+    */
+    void merge(vector<int>& nums1, int m, vector<int>& nums2, int n);
+
+    //二叉树的中序遍历
+    /*
+    给定一个二叉树的根节点 root ，返回 它的 中序 遍历 。
+    */
+    vector<int> inorderTraversal(TreeNode* root);
+
+    //相同的树
+    /*
+    给你两棵二叉树的根节点 p 和 q ，编写一个函数来检验这两棵树是否相同。
+    如果两个树在结构上相同，并且节点具有相同的值，则认为它们是相同的。
+    */
+    bool isSameTree(TreeNode* p, TreeNode* q);
+
+    //对称二叉树
+    /*
+    给你一个二叉树的根节点 root ， 检查它是否轴对称。
+    */
+    bool isSymmetric(TreeNode* root);
+
+    //二叉树的最大深度
+    /*
+    给定一个二叉树 root ，返回其最大深度。
+    二叉树的 最大深度 是指从根节点到最远叶子节点的最长路径上的节点数。
+    */
+    int maxDepth(TreeNode* root);
+
+public:
+    //用于：二叉树的中序遍历
+    vector<int> rootValue;
+
+    //相同的树
+    bool returnValue = true;
 };
 
