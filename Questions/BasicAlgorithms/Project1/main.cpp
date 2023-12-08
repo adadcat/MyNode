@@ -6,30 +6,31 @@ using namespace std;
 
 int main()
 {
-    int test = 1;
-    test = (test > 1 ? 3 : 4, 5);
-
-
-
     Algorithms tmp;
+    //vector<int> vec = { 7, 1, 5, 3, 6, 4 };
+    //auto it = tmp.maxProfit(vec);
 
-    TreeNode* p = new TreeNode();
-    p->val = 1;
+    //vector<int> vec = { 4,1,2,1,2 };
+    //tmp.singleNumber(vec);
 
-    TreeNode* p1 = new TreeNode();
-    p1->val = 2;
+    //string str = "abba";
+    //string input = "dog cat cat dog";
+    //tmp.wordPattern(str,input);
 
-    p->left = p1;
+    //tmp.isPowerOfThree(1162261468);
 
-    TreeNode* q = new TreeNode();
-    q->val = 1;
+    //vector<int> vec1 = { 1,2,2,1 };
+    //vector<int> vec2 = { 2,2 };
+    //tmp.intersection(vec1, vec2);
 
-    TreeNode* q2 = new TreeNode();
-    q2->val = 2;
+    //tmp.isPerfectSquare(16);
 
-    q->right = q2;
+    //string a = "aa";
+    //string b = "aab";
+    //tmp.canConstruct(a, b);
 
-    auto it = tmp.isSameTree(p, q);
+    string str = "loveleetcode";
+    tmp.firstUniqChar(str);
 
     return 0;
 }

@@ -2,6 +2,8 @@
 #include <sstream>
 #include <algorithm>
 #include <unordered_map>
+#include <algorithm>
+#include <unordered_set>
 
 #include "Algorithms.h"
 
@@ -700,8 +702,642 @@ bool Algorithms::isSymmetric(TreeNode* root)
 
 int Algorithms::maxDepth(TreeNode* root)
 {
+    if (root == nullptr)
+    {
+        return 0;
+    }
+    return max(maxDepth(root->left), maxDepth(root->right)) + 1;
+}
+
+vector<vector<int>> Algorithms::generate(int numRows)
+{
+    vector<vector<int>> allParameter;
+    vector<int> tmp;
+
+    if (numRows >= 1)
+    {
+        tmp = {1};
+        allParameter.push_back(tmp);
+    }
+
+    if (numRows >= 2)
+    {
+        tmp = {1,1};
+        allParameter.push_back(tmp);
+    }
+
+    if (numRows < 3)
+    {
+        return allParameter;
+    }
+    else
+    {
+        for (int i = 1;i <= numRows-2;++i)
+        {
+            tmp.clear();
+            tmp.push_back(1);
+
+            int size = allParameter[i].size();
+
+            for (int j = 0;j < size - 1;++j)
+            {
+                tmp.push_back(allParameter[i][j] + allParameter[i][j + 1]);
+            }
+
+            tmp.push_back(1);
+            allParameter.push_back(tmp);
+        }
+    }
+
+    return allParameter;
+}
+
+vector<int> Algorithms::getRow(int rowIndex)
+{
+    vector<vector<int>> allParameter;
+    vector<int> tmp;
+    rowIndex++;
+    if (rowIndex >= 1)
+    {
+        tmp = { 1 };
+        allParameter.push_back(tmp);
+    }
+
+    if (rowIndex >= 2)
+    {
+        tmp = { 1,1 };
+        allParameter.push_back(tmp);
+    }
+
+    if (rowIndex < 3)
+    {
+        return allParameter[rowIndex-1];
+    }
+    else
+    {
+        for (int i = 1;i <= rowIndex - 2;++i)
+        {
+            tmp.clear();
+            tmp.push_back(1);
+
+            int size = allParameter[i].size();
+
+            for (int j = 0;j < size - 1;++j)
+            {
+                tmp.push_back(allParameter[i][j] + allParameter[i][j + 1]);
+            }
+
+            tmp.push_back(1);
+            allParameter.push_back(tmp);
+        }
+    }
+
+    return allParameter[rowIndex-1];
+}
+
+int Algorithms::maxProfit(vector<int>& prices)
+{
+    int min = prices[0], max = 0;
+    int price = 0;
+    int minLoc = 0;
+
+    for (int i = 0;i < prices.size();++i)
+    {
+        if (prices[i] <= min)
+        {
+            min = prices[i];
+            minLoc = i;
+        }
+        else
+        {
+            price = (prices[i] - min) > price ? (prices[i] - min) : price;
+        }
+    }
+
+    return price;
+}
+
+bool Algorithms::isPalindrome(string s)
+{
+    string another_s;
+    for (char ch : s)
+    {
+        if (isalnum(ch))
+        {
+            another_s += tolower(ch);
+        }
+    }
+
+    string resive_another(another_s.rbegin(), another_s.rend());
+
+    return another_s == resive_another;
+}
+
+bool Algorithms::another_isPalindrome(string s)
+{
+    string another_s;
+    for (char ch : s)
+    {
+        if (isalnum(ch))
+        {
+            another_s += tolower(ch);
+        }
+    }
+
+    size_t size = another_s.size();
+
+    int i = 0;
+    int j = size-1;
+
+    while (i < j)
+    {
+        if (another_s[i] == another_s[j])
+        {
+            ++i;
+            --j;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+int Algorithms::singleNumber(vector<int>& nums)
+{
+    unordered_map<int, int> store;
+
+    for (int num : nums)
+    {
+        store[num]++;
+    }
+
+    for (auto it : store)
+    {
+        if (it.second == 1)
+        {
+            return it.first;
+        }
+    }
 
     return 0;
+}
+
+bool Algorithms::hasCycle(ListNode* head)
+{
+    if (head == nullptr || head->next == nullptr)
+    {
+        return false;
+    }
+
+    ListNode* slow = head;
+    ListNode* fast = head->next;
+
+    while (slow != fast)
+    {
+        if (fast == nullptr || fast->next == nullptr)
+        {
+            return false;
+        }
+
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+
+    return true;
+}
+
+bool Algorithms::hash_hasCycle(ListNode* head)
+{
+    unordered_set<ListNode*> hash_store;
+
+    while (head != nullptr)
+    {
+        if (hash_store.count(head))
+        {
+            return false;
+        }
+
+        hash_store.insert(head);
+        head = head->next;
+    }
+
+    return true;
+}
+
+vector<int> Algorithms::preorderTraversal(TreeNode* root)
+{
+
+    return vector<int>();
+}
+
+ListNode* Algorithms::getIntersectionNode(ListNode* headA, ListNode* headB)
+{
+    unordered_set<ListNode*> store_head;
+    ListNode* tmp = headA;
+
+    while (tmp)
+    {
+        store_head.insert(tmp);
+        tmp = tmp->next;
+    }
+
+    tmp = headB;
+    while (tmp)
+    {
+        if (store_head.count(tmp))
+        {
+            return tmp;
+        }
+        tmp = tmp->next;
+    }
+
+    return nullptr;
+}
+
+string Algorithms::convertToTitle(int columnNumber)
+{
+
+    return string();
+}
+
+int Algorithms::majorityElement(vector<int>& nums)
+{
+    int n = nums.size()/2;
+    unordered_map <int, int> map_store;
+
+    for (int num : nums)
+    {
+        map_store[num]++;
+    }
+
+    for (auto it : map_store)
+    {
+        if (it.second > n)
+        {
+            return it.first;
+        }
+    }
+
+    return 0;
+}
+
+bool Algorithms::isBadVersion(int version)
+{
+    return false;
+}
+
+int Algorithms::firstBadVersion(int n)
+{
+    int left = 1, right = n;
+    while (left < right)
+    {
+        //不用left+right的目的是防止溢出
+        int mid = left + (right - left) / 2;
+
+        if (isBadVersion(mid))
+        {
+            //mid在[left,mid];
+            right = mid;
+        }
+        else
+        {
+            left = mid + 1;
+        }
+    }
+
+    return left;
+}
+
+void Algorithms::moveZeroes(vector<int>& nums)
+{
+    int n = nums.size();
+    int left = 0, right =0;
+
+    while (right < n)
+    {
+        if (nums[right])
+        {
+            swap(nums[left], nums[right]);
+            left++;
+        }
+
+        right++;
+    }
+}
+
+bool Algorithms::wordPattern(string pattern, string s)
+{
+    vector<string> vec = Splict(s, " ");
+
+    int length = pattern.size();
+
+    if (length != vec.size())
+    {
+        return false;
+    }
+
+    for (int i = 0;i < length-1;++i)
+    {
+        for (int j = i+1;j < length;++j)
+        {
+            if ((pattern[i] == pattern[j] && vec[i] != vec[j]) || (pattern[i] != pattern[j] && vec[i] == vec[j]))
+            {
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
+
+bool Algorithms::canWinNim(int n)
+{
+    if (n % 4 == 0)
+    {
+        return false;
+    }
+
+    return true;
+}
+
+bool Algorithms::isPowerOfThree(int n)
+{
+    if (n < 0)
+    {
+        return false;
+    }
+
+    if (n == 1)
+    {
+        return true;
+    }
+
+    int i = 0;
+    size_t num = 1;
+    for (int i = 0;;i++)
+    {
+        num *= 3;
+
+        if (num < n)
+        {
+            continue;
+        }
+        else if (num == n)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    return false;
+}
+
+vector<int> Algorithms::countBits(int n)
+{
+    //偶数是另一个数乘2得到，在二进制中，乘以2相当于直接在后面添0
+    // dp[i] = dp[i/2];
+    //奇数由比他小一的偶数+1得到
+    //dp[i]=dp[i-1]+1   => dp[i]=dp[i/2]+1;
+
+    int i = 1;
+    vector<int> vec(n + 1);
+
+    for (int i = 0;i <= n;++i)
+    {
+        if (i % 2 == 0)
+        {
+            vec[i] = vec[i / 2];
+        }
+        else
+        {
+            vec[i] = vec[i / 2] + 1;
+        }
+    }
+
+    return vec;
+}
+
+bool Algorithms::isPowerOfFour(int n)
+{
+    if (n < 4 && n != 1)
+    {
+        return false;
+    }
+    else if (n == 1)
+    {
+        return true;
+    }
+
+
+    int i = 0;
+    size_t num = 1;
+
+    for (int i = 0;;++i)
+    {
+        num *= 4;
+
+        if (num < n)
+        {
+            continue;
+        }
+        else if (num == n)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    return false;
+}
+
+void Algorithms::reverseString(vector<char>& s)
+{
+    int n = s.size();
+    int left = 0, right = n - 1;
+    while (left < right)
+    {
+        swap(s[left], s[right]);
+
+        ++left;
+        --right;
+    }
+}
+
+vector<int> Algorithms::intersection(vector<int>& nums1, vector<int>& nums2)
+{
+    unordered_set<int> store_set;
+
+    for (int num1 : nums1)
+    {
+        store_set.insert(num1);
+    }
+
+    unordered_set<int> single_num;
+    vector<int> vec_num;
+    for (int num2 : nums2)
+    {
+        if (store_set.count(num2))
+        {
+            single_num.insert(num2);
+        }
+    }
+    
+    for (int num : single_num)
+    {
+        vec_num.push_back(num);
+    }
+
+    return vec_num;
+}
+
+vector<int> Algorithms::intersect(vector<int>& nums1, vector<int>& nums2)
+{
+    unordered_map<int, int> store_map;
+    for (int num1 : nums1)
+    {
+        store_map[num1]++;
+    }
+
+    vector<int> vec_nums;
+    for (int num2 : nums2)
+    {
+        if (store_map.count(num2))
+        {
+            vec_nums.push_back(num2);
+            --store_map[num2];
+            if (store_map[num2] == 0)
+            {
+                store_map.erase(num2);
+            }
+        }
+    }
+
+    return vec_nums;
+}
+
+bool Algorithms::isPerfectSquare(int num)
+{
+    for(int i=1;;++i)
+    {
+        double n = double(num) / i;
+        if (i < n)
+        {
+            continue;
+        }
+        else if (i == n)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    return false;
+}
+
+bool Algorithms::canConstruct(string ransomNote, string magazine)
+{
+    int note_size = ransomNote.size();
+    int mag_size = magazine.size();
+    if (note_size > mag_size)
+    {
+        return false;
+    }
+
+    unordered_map<char, int> store_mag;
+
+    for (char mag : magazine)
+    {
+        ++store_mag[mag];
+    }
+
+    for (char ran : ransomNote)
+    {
+        if (store_mag.count(ran))
+        {
+            --store_mag[ran];
+
+            if (store_mag[ran] < 0)
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+int Algorithms::firstUniqChar(string s)
+{
+    unordered_map<char, int> store_s;
+
+    for (char ch : s)
+    {
+        ++store_s[ch];
+    }
+
+    int first = s.size();
+    for (auto it : store_s)
+    {
+        if (it.second == 1)
+        {
+            first = s.find(it.first) < first ? s.find(it.first) : first;
+        }
+    }
+
+    if (first == s.size())
+    {
+        return -1;
+    }
+
+    return first;
+}
+
+vector<string> Algorithms::Splict(const string& source, const string& spliter)
+{
+    //存放string
+    vector<string> store_str;
+
+    //字符的位置
+    int head = 0;
+
+    //分割符号位置
+    int index = source.find(spliter, head);
+
+    while (index >= 0)
+    {
+        string str = source.substr(head, index - head);
+
+        store_str.push_back(str);
+
+        head = index + spliter.size();
+
+        index = source.find(spliter,head);
+    }
+
+    int length = source.size();
+    if (head < length)
+    {
+        string lastStr = source.substr(head, length - head);
+        store_str.push_back(lastStr);
+    }
+
+    return store_str;
 }
 
 
