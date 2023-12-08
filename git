@@ -10,7 +10,12 @@
 8、git commit & git push 
 
 二、Git cherry-pick 将分支1的东西合并到分支2中
+1、git cherry-pick 另一个分支的commit id
+2、git log//查看是否有那条id
+3、git push
 
+这里cherry-pick之前，需要先git stash
+理解是相当于是把git commit替换成了 git cherry-pick + 之前分支提交的id
 如果要取消这次cherry-pick,则使用git cherry-pick --abort，这种情况下当前分支恢复到cherry-pick前的状态，没有改变
 
 三、git报错
