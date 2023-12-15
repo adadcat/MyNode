@@ -1308,6 +1308,322 @@ int Algorithms::firstUniqChar(string s)
     return first;
 }
 
+char Algorithms::findTheDifference(string s, string t)
+{
+    unordered_map<char, int> map_s;
+
+    for (char ch : s)
+    {
+        ++map_s[ch];
+    }
+
+    for (char ch : t)
+    {
+        if (map_s.count(ch))
+        {
+            --map_s[ch];
+
+            if (map_s[ch] < 0)
+            {
+                return ch;
+            }
+        }
+        else
+        {
+            return ch;
+        }
+    }
+}
+
+bool Algorithms::isSubsequence(string s, string t)
+{
+    int i = 0, j = 0;
+
+    //一个从序列s逐步遍历
+    //一个从序列t逐步遍历
+    while (i < s.size() && j < t.size())
+    {
+        //
+        if (s[i] == t[j])
+        {
+            i++;
+        }
+        j++;
+    }
+
+    return i == s.size();
+}
+
+
+bool ifRootNode(TreeNode* root)
+{
+    //获取左节点
+    return !root->left && !root->right;
+}
+
+int dfs(TreeNode* node)
+{
+    int ans = 0;
+    if (node->left)
+    {
+        ans += ifRootNode(node->left) ? node->left->val : dfs(node->left);
+    }
+    if (node->right && !ifRootNode(node->right))
+    {
+        ans += dfs(node->right);
+    }
+
+    return ans;
+}
+
+int Algorithms::sumOfLeftLeaves(TreeNode* root)
+{
+    if (!root)
+    {
+        return 0;
+    }
+
+    return dfs(root);
+}
+
+int Algorithms::longestPalindrome(string s)
+{
+    unordered_map<char, int> store_s;
+
+    for (char ch : s)
+    {
+        ++store_s[ch];
+    }
+
+    bool ifHasOdd = false;
+    int oddNumber = 0;
+    int sum = 0;
+
+    for (auto iter : store_s)
+    {
+        if (iter.second % 2 != 0)
+        {
+            sum += iter.second - 1;
+            ifHasOdd = true;
+        }
+        else
+        {
+            sum += iter.second;
+        }
+    }
+
+    if (ifHasOdd)
+    {
+        return sum + 1;
+    }
+
+    return sum;
+}
+
+vector<string> Algorithms::fizzBuzz(int n)
+{
+    vector<string> vec;
+
+    for (int i = 1;i <= n;++i)
+    {
+        if (i % 3 == 0 && i %5 !=0)
+        {
+            vec.push_back("Fizz");
+        }
+        else if(i%5 ==0 && i % 3!=0)
+        {
+            vec.push_back("Buzz");
+        }
+        else if(i % 3 == 0 && i % 5 == 0)
+        {
+            vec.push_back("FizzBuzz");
+        }
+        else
+        {
+            vec.push_back(to_string(i));
+        }
+    }
+
+    return vec;
+}
+
+int Algorithms::thirdMax(vector<int>& nums)
+{
+    unordered_set<int> set_nums;
+    vector<int> vec_nums;
+
+    for (int num : nums)
+    {
+        set_nums.insert(num);
+    }
+
+    for (auto it = set_nums.begin(); it != set_nums.end(); ++it)
+    {
+        vec_nums.push_back(*it);
+    }
+
+    for (int i = 0;i < vec_nums.size();++i)
+    {
+        for (int j = i;j < vec_nums.size();++j)
+        {
+            if (vec_nums[i] < vec_nums[j])
+            {
+                int tmp = vec_nums[i];
+                vec_nums[i] = vec_nums[j];
+                vec_nums[j] = tmp;
+            }
+        }
+    }
+
+    if (vec_nums.size() < 3)
+    {
+        return vec_nums[0];
+    }
+
+    return vec_nums[2];
+}
+
+string Algorithms::addStrings(string num1, string num2)
+{
+    int add = 0;
+    string str = "";
+
+    int i = num1.size() - 1;
+    int j = num2.size() - 1;
+
+    while (i >= 0 || j >= 0 || add != 0)
+    {
+        int x = i >= 0 ? num1[i] - '0' : 0;
+        int y = j >= 0 ? num2[j] - '0' : 0;
+        int sum = x + y + add;
+        str.push_back('0' + sum % 10);
+        add = sum / 10;
+        --i, --j;
+    }
+
+    reverse(str.begin(), str.end());
+
+    return str;
+}
+
+int Algorithms::countSegments(string s)
+{
+    vector<string> vec= Splict(s, " ");
+
+    return vec.size();
+}
+
+int Algorithms::arrangeCoins(int n)
+{
+    int num = n;
+    for (int i = 0;i <= n;++i)
+    {
+        if (num - i < 0)
+        {
+            return i-1;
+        }
+        else if(num - i == 0)
+        {
+            return i;
+        }
+        num -= i;
+    }
+    return 0;
+}
+
+vector<int> Algorithms::findDisappearedNumbers(vector<int>& nums)
+{
+    vector<int> vec;
+    unordered_set<int> hash_set;
+    for (int num : nums)
+    {
+        hash_set.insert(num);
+    }
+
+    for (int i = 1;i <= nums.size();++i)
+    {
+        if (!hash_set.count(i))
+        {
+            vec.push_back(i);
+        }
+    }
+
+    return vec;
+}
+
+int Algorithms::findContentChildren(vector<int>& g, vector<int>& s)
+{
+    //排序
+    sort(g.begin(), g.end());
+    sort(s.begin(), s.end());
+
+    //双指针
+    int gr = g.size() - 1;
+    int sr = s.size() - 1;
+
+    //分饼干
+    int n = 0;
+    while (gr >= 0 && sr >= 0)
+    {
+        if (s[sr] >= g[gr])
+        {
+            sr--;
+            gr--;
+            n++;
+        }
+        else
+        {
+            gr--;
+        }
+    }
+    return n;
+}
+
+bool Algorithms::repeatedSubstringPattern(string s)
+{
+    //abcabc.abcabc
+    //abc.abc
+    //这两个进行对s的搜索，结果是不一样；上一个在末尾前就搜索到
+    return (s+s).find(s, 1) != s.size();
+}
+
+int Algorithms::islandPerimeter(vector<vector<int>>& grid)
+{
+    constexpr static int dx[4] = { 0, 1, 0, -1 };
+    constexpr static int dy[4] = { 1, 0, -1, 0 };
+    
+    int n = grid.size(), m = grid[0].size();
+    int ans = 0;
+    for (int i = 0; i < n; ++i) 
+    {
+        for (int j = 0; j < m; ++j) 
+        {
+            if (grid[i][j]) 
+            {
+                int cnt = 0;
+                for (int k = 0; k < 4; ++k) 
+                {
+                    int tx = i + dx[k];
+                    int ty = j + dy[k];
+                    if (tx < 0 || tx >= n || ty < 0 || ty >= m || !grid[tx][ty])
+                    {
+                        cnt += 1;
+                    }
+                }
+                ans += cnt;
+            }
+        }
+    }
+    return ans;
+}
+
+string Algorithms::licenseKeyFormatting(string s, int k)
+{
+
+    return string();
+}
+
+
 vector<string> Algorithms::Splict(const string& source, const string& spliter)
 {
     //存放string
@@ -1328,6 +1644,11 @@ vector<string> Algorithms::Splict(const string& source, const string& spliter)
         head = index + spliter.size();
 
         index = source.find(spliter,head);
+
+        if (str == "")
+        {
+            store_str.pop_back();
+        }
     }
 
     int length = source.size();
@@ -1335,6 +1656,11 @@ vector<string> Algorithms::Splict(const string& source, const string& spliter)
     {
         string lastStr = source.substr(head, length - head);
         store_str.push_back(lastStr);
+
+        if (lastStr == "")
+        {
+            store_str.pop_back();
+        }
     }
 
     return store_str;

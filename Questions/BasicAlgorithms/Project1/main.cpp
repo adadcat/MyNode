@@ -29,8 +29,37 @@ int main()
     //string b = "aab";
     //tmp.canConstruct(a, b);
 
-    string str = "loveleetcode";
-    tmp.firstUniqChar(str);
+    //string str = "loveleetcode";
+    //tmp.firstUniqChar(str);
 
+    //string a = "abcd";
+    //string b = "abcde";
+    //tmp.findTheDifference(a, b);
+
+    //string a = "ab";
+    //string b = "baab";
+    //tmp.isSubsequence(a, b);
+
+    /*
+    string str = "À≠”–œ–÷√";
+    vector<char> vec;
+    for (auto &it : str)
+    {
+        vec.push_back(it);
+    }
+    reverse(str.begin(), str.end());
+    cout << str;
+    */
+
+    //tmp.countSegments("        ");
+
+    //tmp.arrangeCoins(2);
+
+    //vector<int> nums = { 1,2,2,1 };
+    //tmp.findDisappearedNumbers(nums);
+    
+    string str = "ccc";
+    tmp.longestPalindrome(str);
+    
     return 0;
 }
