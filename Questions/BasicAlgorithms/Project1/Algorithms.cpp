@@ -4,6 +4,7 @@
 #include <unordered_map>
 #include <algorithm>
 #include <unordered_set>
+#include <stack>
 
 #include "Algorithms.h"
 
@@ -1619,8 +1620,386 @@ int Algorithms::islandPerimeter(vector<vector<int>>& grid)
 
 string Algorithms::licenseKeyFormatting(string s, int k)
 {
+    string str;
+    for (char ch : s)
+    {
+        char  c = toupper(ch);
 
-    return string();
+        if (c == '-')
+        {
+            continue;
+        }
+
+        str += c;
+    }
+
+    reverse(str.begin(), str.end());
+
+    int size = str.size();
+    int index = 0;
+    string finnalStr;
+
+    while (size >= k)
+    {
+        finnalStr += str.substr(index, k);
+        finnalStr.append("-");
+        index += k;
+        size -= k;
+    }
+
+    finnalStr.pop_back();
+    if (size <= k && size != 0)
+    {
+        finnalStr.append("-");
+        finnalStr += str.substr(index, size);
+    }
+
+    reverse(finnalStr.begin(), finnalStr.end());
+
+    return finnalStr;
+}
+
+int Algorithms::findMaxConsecutiveOnes(vector<int>& nums)
+{
+    int max = 0, i = 0;
+    for (int num : nums)
+    {
+        if (num)
+        {
+            i++;
+        }
+        else
+        {
+            if (i > max)
+            {
+                max = i;
+            }
+            i = 0;
+        }
+    }
+
+    if (i > max)
+    {
+        return i;
+    }
+
+    return max;
+}
+
+vector<int> Algorithms::constructRectangle(int area)
+{
+    vector<int> vec;
+    int w, l;
+    int ww = 1, ll = 1;
+
+    for (int i = 1;i < area;++i)
+    {
+        if (area % i != 0)
+        {
+            continue;
+        }
+
+        w = i;
+        l = area / i;
+
+        if ((w - l) > 0)
+        {
+            break;
+        }
+
+        ww = w;
+        ll = l;
+    }
+
+    vec.push_back(ww);
+    vec.push_back(ll);
+
+    return vec;
+}
+
+int Algorithms::findPoisonedDuration(vector<int>& timeSeries, int duration)
+{
+    unordered_set<int> hash_set;
+
+    for (int i = 0;i < timeSeries.size();++i)
+    {
+        for (int j = 0;j < duration;++j)
+        {
+            hash_set.insert(timeSeries[i] + j);
+        }
+    }
+
+    return hash_set.size();
+}
+
+int Algorithms::high_findPoisonedDuration(vector<int>& timeSeries, int duration)
+{
+    int sum = 0;
+
+    for (int i = 1;i < timeSeries.size();++i)
+    {
+        sum += min(timeSeries[i] - timeSeries[i - 1], duration);
+    }
+
+    return sum+duration;
+}
+
+vector<int> Algorithms::nextGreaterElement(vector<int>& nums1, vector<int>& nums2)
+{
+    int m = nums1.size();
+    int n = nums2.size();
+
+    vector<int> res(m);
+    for (int i = 0; i < m; ++i) 
+    {
+        int j = 0;
+
+        while (j < n && nums2[j] != nums1[i]) 
+        {
+            ++j;
+        }
+
+        int k = j + 1;
+
+        while (k < n && nums2[k] < nums2[j]) 
+        {
+            ++k;
+        }
+
+        res[i] = k < n ? nums2[k] : -1;
+    }
+    return res;
+}
+
+vector<int> Algorithms::another_nextGreaterElement(vector<int>& nums1, vector<int>& nums2)
+{
+    unordered_map<int, int> hashmap;
+    stack<int> st;
+    for (int i = nums2.size() - 1; i >= 0; --i) 
+    {
+        int num = nums2[i];
+        while (!st.empty() && num >= st.top()) 
+        {
+            st.pop();
+        }
+
+        hashmap[num] = st.empty() ? -1 : st.top();
+        st.push(num);
+    }
+
+    vector<int> res(nums1.size());
+    for (int i = 0; i < nums1.size(); ++i) 
+    {
+        res[i] = hashmap[nums1[i]];
+    }
+
+    return res;
+}
+
+vector<string> Algorithms::findWords(vector<string>& words)
+{
+    unordered_set<char> keywords1 = { 'q','w','e','r','t','y','u','i','o','p','Q','W','E','R','T','Y','U','I','O','P'};
+    unordered_set<char> keywords2 = { 'a','s','d','f','g','h','j','k','l','A','S','D','F','G','H','J','K','L'};
+    unordered_set<char> keywords3 = { 'z','x','c','v','b','n','m','Z','X','C','V','B','N','M'};
+    vector<string> vec;
+
+    for (string word : words)
+    {
+        bool isSame = true;
+
+        if (keywords1.count(word[0]))
+        {
+            for (char ch : word)
+            {
+                if (!keywords1.count(ch))
+                {
+                    isSame = false;
+                    break;
+                }
+            }
+        }
+        else if (keywords2.count(word[0]))
+        {
+            for (char ch : word)
+            {
+                if (!keywords2.count(ch))
+                {
+                    isSame = false;
+                    break;
+                }
+            }
+        }
+        else
+        {
+            for (char ch : word)
+            {
+                if (!keywords3.count(ch))
+                {
+                    isSame = false;
+                    break;
+                }
+            }
+        }
+
+        if (isSame)
+        {
+            vec.push_back(word);
+        }
+    }
+
+    return vec;
+}
+
+string Algorithms::convertToBase7(int num)
+{
+    return convertToBaseN(num, 7);
+}
+
+vector<string> Algorithms::findRelativeRanks(vector<int>& score)
+{
+    unordered_map<int, int> hash_map;
+    vector<int> vec = score;
+    sort(vec.begin(), vec.end(), greater<int>());
+
+    for (int i = 0;i < score.size();++i)
+    {
+        hash_map[score[i]] = i;
+    }
+
+    vector<string> str(score.size());
+    for (int j = 0;j < vec.size();j++)
+    {
+        int tmp =hash_map[vec[j]];
+
+        switch (j)
+        {
+        case 0:
+            str[tmp] = "Gold Medal";
+            break;
+        case 1:
+            str[tmp] = "Silver Medal";
+            break;
+        case 2:
+            str[tmp] = "Bronze Medal";
+            break;
+        default:
+            str[tmp] = to_string(j+1);
+            break;
+        }
+    }
+
+    return str;
+}
+
+bool Algorithms::checkPerfectNumber(int num)
+{
+    if (num == 1)
+    {
+        return true;
+    }
+
+    unordered_set<int> hash;
+
+    for (int i = 1;i < num / 2;++i)
+    {
+        if (num % i == 0)
+        {
+            hash.insert(i);
+            hash.insert(num / i);
+        }
+    }
+
+    int sum = 0;
+    for (int i : hash)
+    {
+        sum += i;
+    }
+
+    return (sum==num*2)?true:false;
+}
+
+
+int sum(int n)
+{
+    if (0 == n)
+    {
+        return 0;
+    }
+    if (1 == n)
+    {
+        return 1;
+    }
+
+    return sum(n - 1) + sum(n - 2);
+}
+
+int Algorithms::fib(int n)
+{
+    int num = sum(n);
+    
+    return num;
+}
+
+bool Algorithms::detectCapitalUse(string word)
+{
+    bool firstBig = true;
+    if ((word[0] - 'a') >= 0)
+    {
+        firstBig = false;
+    }
+
+    for (int i = 1;i < word.size();++i)
+    {
+        bool secondBig = true;
+        if (word[1] - 'a' >= 0)
+        {
+            secondBig = false;
+        }
+
+        if (firstBig)
+        {
+            if (secondBig)
+            {
+                if ((word[i] - 'a') >= 0)
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                if ((word[i] - 'a') < 0)
+                {
+                    return false;
+                }
+            }
+        }
+        else
+        {
+            if ((word[i] - 'a') < 0)
+            {
+                return false;
+            }
+        }
+    }
+    
+    return true;
+}
+
+int Algorithms::findLUSlength(string a, string b)
+{
+    return a != b ? max(a.length(), b.length()) : -1;
+}
+
+string Algorithms::reverseStr(string s, int k)
+{
+    int length = s.size();
+
+    for (int i = 0;i < s.size();i += 2 * k)
+    {
+        reverse(s.begin() + i, s.begin() + min(i + k, length));
+    }
+
+    return s;
 }
 
 
@@ -1657,6 +2036,7 @@ vector<string> Algorithms::Splict(const string& source, const string& spliter)
         string lastStr = source.substr(head, length - head);
         store_str.push_back(lastStr);
 
+        //如果传入"-------"，会导致vector全为空
         if (lastStr == "")
         {
             store_str.pop_back();
@@ -1664,6 +2044,42 @@ vector<string> Algorithms::Splict(const string& source, const string& spliter)
     }
 
     return store_str;
+}
+
+string Algorithms::convertToBaseN(int num, int N)
+{
+    //存储字符
+    const string words = "0123456789abcdef";
+
+    //num为0
+    if (num == 0)
+    {
+        return "0";
+    }
+
+    //标识符
+    string flag = "";
+    //
+    string str = "";
+
+    //num为负数
+    if (num < 0)
+    {
+        flag = "-";
+        num = -num;
+    }
+
+    int index;
+    while (num)
+    {
+        index = num % N;
+        num /= N;
+        str += words[index];
+    }
+
+    reverse(str.begin(), str.end());
+
+    return flag + str;
 }
 
 

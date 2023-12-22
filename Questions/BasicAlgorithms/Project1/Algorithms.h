@@ -643,6 +643,165 @@ public:
     */
     string licenseKeyFormatting(string s, int k);
 
+    //65
+    //最大连续1的个数
+    /*
+    给定一个二进制数组 nums ， 计算其中最大连续 1 的个数。
+    */
+    int findMaxConsecutiveOnes(vector<int>& nums);
+
+    //66
+    //构造矩形
+    /*
+    作为一位web开发者， 懂得怎样去规划一个页面的尺寸是很重要的。 所以，现给定一个具体的矩形页面面积，你的任务是设计一个长度为 L 和宽度为 W 且满足以下要求的矩形的页面。要求：
+    你设计的矩形页面必须等于给定的目标面积。
+    宽度 W 不应大于长度 L ，换言之，要求 L >= W 。
+    长度 L 和宽度 W 之间的差距应当尽可能小。
+    返回一个 数组 [L, W]，其中 L 和 W 是你按照顺序设计的网页的长度和宽度。
+    */
+    vector<int> constructRectangle(int area);
+
+    //67
+    //提莫攻击
+    /*
+    当提莫攻击艾希，艾希的中毒状态正好持续 duration 秒。
+    正式地讲，提莫在 t 发起攻击意味着艾希在时间区间 [t, t + duration - 1]（含 t 和 t + duration - 1）处于中毒状态
+    如果提莫在中毒影响结束 前 再次攻击，中毒状态计时器将会 重置 ，在新的攻击之后，中毒影响将会在 duration 秒后结束。
+    给你一个 非递减 的整数数组 timeSeries ，其中 timeSeries[i] 表示提莫在 timeSeries[i] 秒时对艾希发起攻击，以及一个表示中毒持续时间的整数 duration 。
+    返回艾希处于中毒状态的 总 秒数。
+    示例 1：
+    输入：timeSeries = [1,4], duration = 2
+    输出：4
+    解释：提莫攻击对艾希的影响如下：
+    - 第 1 秒，提莫攻击艾希并使其立即中毒。中毒状态会维持 2 秒，即第 1 秒和第 2 秒。
+    - 第 4 秒，提莫再次攻击艾希，艾希中毒状态又持续 2 秒，即第 4 秒和第 5 秒。
+    艾希在第 1、2、4、5 秒处于中毒状态，所以总中毒秒数是 4 。
+    */
+    int findPoisonedDuration(vector<int>& timeSeries, int duration);
+    //67 简洁版
+    int high_findPoisonedDuration(vector<int>& timeSeries, int duration);
+
+    //68
+    //下一个更大元素I
+    /*
+    nums1 中数字 x 的 下一个更大元素 是指 x 在 nums2 中对应位置 右侧 的 第一个 比 x 大的元素。
+    给你两个 没有重复元素 的数组 nums1 和 nums2 ，下标从 0 开始计数，其中nums1 是 nums2 的子集。
+    对于每个 0 <= i < nums1.length ，找出满足 nums1[i] == nums2[j] 的下标 j ，并且在 nums2 确定 nums2[j] 的 下一个更大元素 。
+    如果不存在下一个更大元素，那么本次查询的答案是 -1 。
+    返回一个长度为 nums1.length 的数组 ans 作为答案，满足 ans[i] 是如上所述的 下一个更大元素 。
+    示例 1：
+    输入：nums1 = [4,1,2], nums2 = [1,3,4,2].
+    输出：[-1,3,-1]
+    解释：nums1 中每个值的下一个更大元素如下所述：
+    - 4 ，用加粗斜体标识，nums2 = [1,3,4,2]。不存在下一个更大元素，所以答案是 -1 。
+    - 1 ，用加粗斜体标识，nums2 = [1,3,4,2]。下一个更大元素是 3 。
+    - 2 ，用加粗斜体标识，nums2 = [1,3,4,2]。不存在下一个更大元素，所以答案是 -1 。
+    */
+    vector<int> nextGreaterElement(vector<int>& nums1, vector<int>& nums2);
+    //hash+堆栈
+    vector<int> another_nextGreaterElement(vector<int>& nums1, vector<int>& nums2);
+
+    //69
+    //键盘行
+    /*
+    给你一个字符串数组 words ，只返回可以使用在 美式键盘 同一行的字母打印出来的单词。键盘如下图所示。
+    美式键盘 中：
+    第一行由字符 "qwertyuiop" 组成。
+    第二行由字符 "asdfghjkl" 组成。
+    第三行由字符 "zxcvbnm" 组成。
+    */
+    vector<string> findWords(vector<string>& words);
+
+    //70
+    //七进制数
+    /*
+    给定一个整数 num，将其转化为 7 进制，并以字符串形式输出。
+    示例 1:
+    输入: num = 100
+    输出: "202"
+    */
+    string convertToBase7(int num);
+
+    //71
+    //相对名次
+    /*
+    给你一个长度为 n 的整数数组 score ，其中 score[i] 是第 i 位运动员在比赛中的得分。所有得分都 互不相同 。
+    运动员将根据得分 决定名次 ，其中名次第 1 的运动员得分最高，名次第 2 的运动员得分第 2 高，依此类推。运动员的名次决定了他们的获奖情况：
+    名次第 1 的运动员获金牌 "Gold Medal" 。
+    名次第 2 的运动员获银牌 "Silver Medal" 。
+    名次第 3 的运动员获铜牌 "Bronze Medal" 。
+    从名次第 4 到第 n 的运动员，只能获得他们的名次编号（即，名次第 x 的运动员获得编号 "x"）。
+    使用长度为 n 的数组 answer 返回获奖，其中 answer[i] 是第 i 位运动员的获奖情况。
+    示例 1：
+    输入：score = [5,4,3,2,1]
+    输出：["Gold Medal","Silver Medal","Bronze Medal","4","5"]
+    解释：名次为 [1st, 2nd, 3rd, 4th, 5th] 。
+    */
+    vector<string> findRelativeRanks(vector<int>& score);
+
+    //72
+    //完美数
+    /*
+    对于一个 正整数，如果它和除了它自身以外的所有 正因子 之和相等，我们称它为 「完美数」。
+    给定一个 整数 n， 如果是完美数，返回 true；否则返回 false。
+    示例 1：
+    输入：num = 28
+    输出：true
+    解释：28 = 1 + 2 + 4 + 7 + 14
+    1, 2, 4, 7, 和 14 是 28 的所有正因子。
+    */
+    bool checkPerfectNumber(int num);
+
+    //73
+    //斐波拉契数列
+    /*
+    斐波那契数 （通常用 F(n) 表示）形成的序列称为 斐波那契数列 。该数列由 0 和 1 开始，后面的每一项数字都是前面两项数字的和。也就是：
+    F(0) = 0，F(1) = 1
+    F(n) = F(n - 1) + F(n - 2)，其中 n > 1
+    给定 n ，请计算 F(n) 。
+    */
+    int fib(int n);
+
+    //74
+    //检测大写字母
+    /*
+    我们定义，在以下情况时，单词的大写用法是正确的：
+    全部字母都是大写，比如 "USA" 。
+    单词中所有字母都不是大写，比如 "leetcode" 。
+    如果单词不只含有一个字母，只有首字母大写， 比如 "Google" 。
+    给你一个字符串 word 。如果大写用法正确，返回 true ；否则，返回 false 。
+
+    示例 1：
+    输入：word = "USA"
+    输出：true
+    */
+    bool detectCapitalUse(string word);
+
+    //75
+    //最长的特殊序列 I
+    /*
+    给你两个字符串 a 和 b，请返回 这两个字符串中 最长的特殊序列  的长度。如果不存在，则返回 -1 。
+    「最长特殊序列」 定义如下：该序列为 某字符串独有的最长子序列（即不能是其他字符串的子序列） 。
+    字符串 s 的子序列是在从 s 中删除任意数量的字符后可以获得的字符串。
+    例如，"abc" 是 "aebdc" 的子序列，因为删除 "aebdc" 中斜体加粗的字符可以得到 "abc" 。 
+    "aebdc" 的子序列还包括 "aebdc" 、 "aeb" 和 "" (空字符串)。
+    */
+    int findLUSlength(string a, string b);
+
+    //76
+    //反转字符串 II
+    /*
+    给定一个字符串 s 和一个整数 k，从字符串开头算起，每计数至 2k 个字符，就反转这 2k 字符中的前 k 个字符。
+    如果剩余字符少于 k 个，则将剩余字符全部反转。
+    如果剩余字符小于 2k 但大于或等于 k 个，则反转前 k 个字符，其余字符保持原样。
+
+    示例 1：
+    输入：s = "abcdefg", k = 2
+    输出："bacdfeg"
+    */
+    //通俗一点说，每隔k个反转k个，末尾不够k个时全部反转
+    string reverseStr(string s, int k);
+
 public:
     //用于：二叉树的中序遍历
     vector<int> rootValue;
@@ -662,5 +821,12 @@ public:
      将分割出来的字符串存入一个vector<string>中
      */
      vector<string> Splict(const string& source, const string& soliter);
+
+     //定义一个进制转换函数，且转换成字符串的形式
+     /*
+     如果是7进制，
+     输入: num = 100 输出: "202"
+     */
+     string convertToBaseN(int num, int N);
 };
 

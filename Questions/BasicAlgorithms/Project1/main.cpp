@@ -58,8 +58,18 @@ int main()
     //vector<int> nums = { 1,2,2,1 };
     //tmp.findDisappearedNumbers(nums);
     
-    string str = "ccc";
-    tmp.longestPalindrome(str);
-    
+    //string str = "ccc";
+    //tmp.longestPalindrome(str);
+
+    //
+    //vector<string> vecfindWords = { "Hello","Alaska","Dad","Peace" };
+    //tmp.findWords(vecfindWords);
+
+   // vector<int> intRanks = { 5,4,3,2,1 };
+    //tmp.findRelativeRanks(intRanks);
+
+    string str = "Google";
+    tmp.detectCapitalUse(str);
+
     return 0;
 }
