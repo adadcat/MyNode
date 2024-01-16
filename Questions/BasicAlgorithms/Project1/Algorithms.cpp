@@ -2002,6 +2002,467 @@ string Algorithms::reverseStr(string s, int k)
     return s;
 }
 
+bool Algorithms::checkRecord(string s)
+{
+    int absents = 0, lates = 0;
+    for (auto& ch : s) 
+    {
+        if (ch == 'A') 
+        {
+            absents++;
+            if (absents >= 2) 
+            {
+                return false;
+            }
+        }
+
+        if (ch == 'L') 
+        {
+            lates++;
+            if (lates >= 3) 
+            {
+                return false;
+            }
+        }
+        else 
+        {
+            lates = 0;
+        }
+    }
+    return true;
+}
+
+string Algorithms::reverseWords(string s)
+{
+    vector<string> vec = Splict(s," ");
+
+    s.clear();
+    for (string str : vec)
+    {
+        reverse(str.begin(),str.end());
+        s += str;
+        s += " ";
+    }
+
+    s.pop_back();
+
+    return s;
+}
+
+int Algorithms::arrayPairSum(vector<int>& nums)
+{
+    sort(nums.begin(), nums.end());
+
+    int sum = 0;
+
+    for (int i = 0;i < nums.size();i+=2)
+    {
+        sum += nums[i];
+    }
+
+    return sum;
+}
+
+vector<vector<int>> Algorithms::matrixReshape(vector<vector<int>>& mat, int r, int c)
+{
+    int m = mat.size();
+    int n = mat[0].size();
+    if (m * n != r * c)
+    {
+        return mat;
+    }
+
+    vector<vector<int>> vec(r, vector<int>(c));
+    for (int i = 0;i < m * n;++i)
+    {
+        vec[i / c][i % c] = mat[i / n][i % n];
+    }
+
+    return vec;
+}
+
+int Algorithms::distributeCandies(vector<int>& candyType)
+{
+    unordered_set<int> hash_set;
+
+    for (int type : candyType)
+    {
+        hash_set.insert(type);
+    }
+
+    int m = candyType.size()/2;
+    int n = hash_set.size();
+
+    return min(m, n);
+}
+
+int Algorithms::findLHS(vector<int>& nums)
+{
+    unordered_map<int, int> hash_map;
+
+    for (int num : nums)
+    {
+        hash_map[num]++;
+    }
+
+    int res = 0;
+    for (auto iter : hash_map) 
+    {
+        if (hash_map.count(iter.first + 1)) 
+        {
+            res = max(res, iter.second+hash_map[iter.first+1]);
+        }
+    }
+
+    return res;
+}
+
+vector<string> Algorithms::findRestaurant(vector<string>& list1, vector<string>& list2)
+{
+    unordered_map<string, int> hash_map;
+
+    for (int i = 0;i < list1.size();++i)
+    {
+        hash_map.insert(make_pair(list1[i], i));
+    }
+
+    vector<string> vec;
+    
+    int index = list1.size() + list2.size();
+
+    for (int i = 0;i < hash_map.size();++i)
+    {
+        if (hash_map.count(list2[i]) > 0)
+        {
+            int j = hash_map[list2[i]];
+
+            if (i + j < index)
+            {
+                vec.clear();
+                index = i + j;
+                vec.push_back(list2[i]);
+            }
+            else if (i + j == index)
+            {
+                vec.push_back(list2[i]);
+            }
+        }
+    }
+
+    return vec;
+}
+
+bool Algorithms::canPlaceFlowers(vector<int>& flowerbed, int n)
+{
+    flowerbed.insert(flowerbed.begin(), 0);
+    flowerbed.push_back(0);
+
+    for (int i = 1;i < flowerbed.size() ;++i)
+    {
+        if (flowerbed[i - 1] == 0 && flowerbed[i] == 0 && flowerbed[i + 1] == 0)
+        {
+            // 种花！
+            flowerbed[i] = 1; 
+            n--;
+        }
+    }
+
+    return n <= 0;
+}
+
+int Algorithms::maximumProduct(vector<int>& nums)
+{
+    sort(nums.begin(), nums.end(), greater<int>());
+
+    cout<< nums[0] * nums[1] * nums[2];
+    return nums[0] * nums[1] * nums[2];
+}
+
+double Algorithms::findMaxAverage(vector<int>& nums, int k)
+{
+    int left = 0;
+    double sum = 0;
+
+    for (int i = 0;i < k;++i)
+    {
+        sum += nums[i];
+    }
+    
+    double maxValue = sum;
+
+    for (int i =k;i < nums.size();++i)
+    {
+        sum = sum - nums[i - k] + nums[i];
+
+        maxValue = max(maxValue, sum);
+    }
+
+    return maxValue/k;
+}
+
+vector<int> Algorithms::findErrorNums(vector<int>& nums)
+{
+    unordered_map<int, int> hash_map;
+    vector<int> tmp(2);
+
+    for (int num : nums)
+    {
+        hash_map[num]++;
+    }
+
+    for (int i = 0;i <= nums.size();++i)
+    {
+        int count = hash_map[i];
+
+        if (count == 2)
+        {
+            tmp[0] = i;
+        }
+        else if (count == 0)
+        {
+            tmp[1] = i;
+        }
+    }
+
+    return tmp;
+}
+
+bool Algorithms::judgeCircle(string moves)
+{
+    int x = 0, y = 0;
+
+    for (char move : moves)
+    {
+        if (move == 'U')
+        {
+            x++;
+        }
+        else if(move == 'D')
+        {
+            x--;
+        }
+        else if (move == 'L')
+        {
+            y++;
+        }
+        else if (move == 'R')
+        {
+            y--;
+        }
+    }
+
+    return x == 0 && y == 0;
+}
+
+
+int Algorithms::findLengthOfLCIS(vector<int>& nums)
+{
+    int count = 1;
+    int j = 1;
+
+    for (int i = 0;i < nums.size()-1;++i)
+    {
+        if (nums[i] < nums[i + 1])
+        {
+            j++;
+        }
+        else
+        {
+            j = 1;
+        }
+
+        count = max(j, count);
+    }
+
+    return count;
+}
+
+bool checkPalindrome(string s, int left, int right)
+{
+    for (int i = left, j = right;i < j;++i, --j)
+    {
+        if (s[i] != s[j])
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+bool Algorithms::validPalindrome(string s)
+{
+    /*
+    * 这里是重新排列了字符串，不符合题意
+    unordered_map<char, int> hash_map;
+
+    for (char ch : s)
+    {
+        hash_map[ch]++;
+    }
+
+    int odd = 0;
+    for (auto iter : hash_map)
+    {
+        if (iter.second % 2 == 1)
+        {
+            odd++;
+        }
+    }
+
+    if (odd < 3)
+    {
+        return true;
+    }
+
+    return false;
+    */
+
+    int low = 0, hight = s.size() - 1;
+
+    while (low < hight)
+    {
+        if (s[low] != s[hight])
+        {
+            return checkPalindrome(s, low+1, hight) || checkPalindrome(s, low, hight-1);
+        }
+
+        low++, hight--;
+    }
+
+    return true;
+}
+
+int Algorithms::calPoints(vector<string>& operations)
+{
+    stack<int> vec;
+
+    for (string str : operations)
+    {
+        if (str == "C")
+        {
+            //使前一次得分的记录无效并将其移除
+            vec.pop();
+        }
+        else if (str == "D")
+        {
+            //本回合新获得的得分是前一次得分的两倍
+            vec.push(vec.top() * 2);
+        }
+        else if (str == "+")
+        {
+            //本回合新获得的得分是前两次得分的总和
+            int last = vec.top();
+            vec.pop();
+            int tmp = last + vec.top();
+            vec.push(last);
+            vec.push(tmp);
+        }
+        else
+        {
+            //本回合新获得分数 x 
+            vec.push(std::stoi(str));
+        }
+    }
+
+    int sum = 0;
+    while (vec.size() > 0)
+    {
+        sum += vec.top();
+        vec.pop();
+    }
+
+    return sum;
+}
+
+bool Algorithms::hasAlternatingBits(int n)
+{
+    int last = 2;
+
+    while (n != 0)
+    {
+        if (n % 2 == last)
+        {
+            return false;
+        }
+
+        last = n % 2;
+        n /= 2;
+    }
+
+    return true;
+}
+
+int Algorithms::countBinarySubstrings(string s)
+{
+    vector<int> vec;
+    int insert = 1;
+    for (int i = 1;i < s.size();++i)
+    {
+        if (s[i] == s[i - 1])
+        {
+            insert++;
+        }
+        else
+        {
+            vec.push_back(insert);
+            insert = 1;
+        }
+    }
+    vec.push_back(insert);
+
+    int sum = 0;
+    for (int j = 1;j < vec.size();++j)
+    {
+        sum += min(vec[j], vec[j - 1]);
+    }
+
+    return sum;
+}
+
+int Algorithms::findShortestSubArray(vector<int>& nums)
+{
+    unordered_map<int, vector<int>> hash_map;
+    
+    for (int i = 0;i < nums.size();++i)
+    {
+        if (hash_map.count(nums[i]))
+        {
+            //存放次数
+            hash_map[nums[i]][0]++;
+            //存放末尾的位置
+            hash_map[nums[i]][2] = i;
+        }
+        else
+        {
+            hash_map[nums[i]] = { 1,i,i };
+        }
+    }
+
+    int maxCount = 0, minLength = 0;
+
+    for (auto iter : hash_map)
+    {
+        if (iter.second[0] > maxCount)
+        {
+            maxCount = iter.second[0];
+            minLength = iter.second[2] - iter.second[1] + 1;
+        }
+        else if (iter.second[0] == maxCount)
+        {
+            minLength = min(minLength, iter.second[2] - iter.second[1] + 1);
+        }
+    }
+
+    return minLength;
+}
+
+int Algorithms::search(vector<int>& nums, int target)
+{
+
+
+    return 0;
+}
 
 vector<string> Algorithms::Splict(const string& source, const string& spliter)
 {
