@@ -1,0 +1,5 @@
+1、cmake_minimum_required(VERSION XXX)
+这里是说明cmake的版本，XXX是版本号
+
+2、project(XXX)
+指定项目名称,XXX是项目名
