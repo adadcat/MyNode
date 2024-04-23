@@ -7,7 +7,7 @@
 3、add_executable（XXX xx.cpp）
 用来生成可执行文件，需要指定生成可执行文件的名称和相关源文件
 但是，在使用中，我们会需要多个可执行文件，或者会将可执行文件进行名称的更改，这里就引入了set语句
-
+  
 4、
 为了应对3中的情况，PROJECT_NAME作为可执行文件的名称
 add_executable(${PROJECT_NAME} test.cpp)
@@ -27,3 +27,50 @@ PROJECT_BINARY_DIR 表示当前工程的二进制路径，即编译产物会存�
 set(CMAKE_CXX_STANDARD 11)   指定c++的版本，这里11表示指定使用C++11
 set(CMAKE_CXX_STANDARD_REQUIRED True)  如果设置为 `ON`，那么 CMake 会要求编译器必须支持 `CMAKE_CXX_STANDARD` 中设置的 C++ 版本，否则会配置失败。
                                        如果设置为 `OFF`或者未设置，那么如果编译器不支持 `CMAKE_CXX_STANDARD` 中设置的 C++ 版本，CMake 会回退到编译器支持的最新版本。
+
+8、将项目中的源文件搜索
+1》使用aux_source_directory可查找某个路径下所有的文件
+aux_source_directory(< dir > < variable >)
+  dir：要搜索的目录
+  variable：将从dir目录下搜索到的源文件列表存储到该变量中
+
+2》使用file可也可以查找某路径下所以的文件（并且，file文件还有别的功能）
+file(GLOB/GLOB_RECURSE 变量名 要搜索的文件路径和文件类型)
+  GLOB: 将指定目录下搜索到的满足条件的所有文件名生成一个列表，并将其存储到变量中。
+  GLOB_RECURSE：递归搜索指定目录，将搜索到的满足条件的文件名生成一个列表，并将其存储到变量中。
+
+9、链接静态库   链接动态库  
+1》针对静态库
+link_libraries(<static lib> [<static lib>...])
+  <static lib>: 可以是全名；可以是掐头(lib)去尾(.a)的名字 xxx
+  [<static lib>...]: 这里是指其他静态库的名字
+
+2》针对动态库
+target_link_libraries(<target> <PRAVATE|PUBLIC|INTERFACE> <item>... [PRAVATE|PUBLIC|INTERFACE]<item>...)
+  target:库的名字，该文件可以是一个动态库、一个可执行文件、一个源文件
+  PUBLIC：在public后面的库会被Link到前面的target中，并且里面的符号也会被导出，提供给第三方使用。（默认为PUBLIC）
+  PRIVATE：在private后面的库仅被link到前面的target中，并且终结掉，第三方不能感知你调了啥库
+  INTERFACE：在interface后面引入的库不会被链接到前面的target中，只会导出符号。
+
+10、日志打印
+在CMake中可以用用户显示一条消息，该命令的名字为message：
+
+CMAKE
+1
+message([STATUS|WARNING|AUTHOR_WARNING|FATAL_ERROR|SEND_ERROR] "message to display" ...)
+  (无) ：重要消息
+  STATUS ：非重要消息
+  WARNING：CMake 警告, 会继续执行
+  AUTHOR_WARNING：CMake 警告 (dev), 会继续执行
+  SEND_ERROR：CMake 错误, 继续执行，但是会跳过生成的步骤
+  FATAL_ERROR：CMake 错误, 终止所有处理过程
+
+CMake的命令行工具会在stdout上显示STATUS消息，在stderr上显示其他所有消息。CMake的GUI会在它的log区域显示所有消息。
+CMake警告和错误消息的文本显示使用的是一种简单的标记语言。文本没有缩进，超过长度的行会回卷，段落之间以新行做为分隔符。
+
+
+
+
+
+
+
