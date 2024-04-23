@@ -53,10 +53,6 @@ target_link_libraries(<target> <PRAVATE|PUBLIC|INTERFACE> <item>... [PRAVATE|PUB
   INTERFACE：在interface后面引入的库不会被链接到前面的target中，只会导出符号。
 
 10、日志打印
-在CMake中可以用用户显示一条消息，该命令的名字为message：
-
-CMAKE
-1
 message([STATUS|WARNING|AUTHOR_WARNING|FATAL_ERROR|SEND_ERROR] "message to display" ...)
   (无) ：重要消息
   STATUS ：非重要消息
