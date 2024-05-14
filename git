@@ -29,3 +29,7 @@ Pull operation failed.
 .git下的index.lock文件，在进行某些比较费时的git操作时自动生成，操作结束后自动删除，相当于一个锁定文件，目的在于防止对一个目录同时进行多个操作。
 有时强制关闭进行中的git操作，这个文件没有被自动删除，之后就无法进行其他git操作，必须手动删除。
 ===》找到.git/index.lock文件，直接删除即可；
+
+四、git push时一直附带别人的东西
+在git merge master，本地也无修改后，再次git push。发现提交的代码携带了别人的东西
+这里可以，git rebase master后，再git pull(可以用git log 先查看一下),再git push.
