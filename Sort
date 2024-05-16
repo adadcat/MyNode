@@ -11,4 +11,8 @@ void swap(T&a,T&b)
 void  BubbleSort(vector<int> &vec)
 {
   int size = vec.size();
+  if(size<=1)
+  {
+    return;
+  }
 }
