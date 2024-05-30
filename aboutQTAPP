@@ -1,0 +1,11 @@
+一.what if the QT CREATOR WARRING:" pass a context object connect 3th paramter" ?
+CAUSE：在Qt中使用三个参数重载的connect函数时，槽函数使用Lambda表达式。如果此时Lambda表达式使用了至少一个上下文对象。
+just like:    
+    connect(quitAction,&QAction::triggered,[&test](){
+      this->close();
+      });
+  如果test已经结束了其生命周期（因为是在栈上定义的变量），则会向一个已经已经被删除的对象发送信号，这可能会导致程序的崩溃。
+SOLVE:所以可以把使用的对象作为第三个参数传递给connect函数（注：如果Lambda里使用了多个上下文对象依旧有程序崩溃的可能性）
+    connect(quitAction,&QAction::triggered,&test,[=test](){
+    this->close();
+    });
